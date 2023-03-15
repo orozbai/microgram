@@ -10,4 +10,6 @@ public class User {
     private Integer postsCount;
     private Integer subscriptionsCount;
     private Integer followersCount;
+    private String name;
+    private String surname;
 }

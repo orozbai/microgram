@@ -15,10 +15,16 @@ public class UserService {
     public List<User> getUsersFromName() {
         return userDao.getUsersFromName();
     }
+
     public List<User> getUsersFromAccountName() {
         return userDao.getUsersFromAccountName();
     }
+
     public List<User> getUsersFromEmail() {
         return userDao.getUsersFromEmail();
+    }
+
+    public List<User> CheckUserFromEmail() {
+        return userDao.CheckUserFromEmail();
     }
 }

@@ -28,7 +28,7 @@ public class UserDao {
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(User.class));
     }
 
-    public List<User> CheckUserFromEmail() {
+    public List<User> checkUserFromEmail() {
         String sql = "select * from users where email like 'user@example.com'";
         var user = jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(User.class));
         if (user != null) {

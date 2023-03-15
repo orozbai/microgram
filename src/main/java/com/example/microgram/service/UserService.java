@@ -24,7 +24,7 @@ public class UserService {
         return userDao.getUsersFromEmail();
     }
 
-    public List<User> CheckUserFromEmail() {
-        return userDao.CheckUserFromEmail();
+    public List<User> checkUserFromEmail() {
+        return userDao.checkUserFromEmail();
     }
 }

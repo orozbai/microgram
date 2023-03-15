@@ -18,4 +18,15 @@ public class PublicationDao {
         String sql = "select * from publication where user_id <> 'my_user_id'";
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Publication.class));
     }
+
+    public List<Publication> selectPublicationsForYourFeedBasedOnSubscriptionsToOtherUsers() {
+        String sql = "select * from publications join subscriptions ON publication.user_id = subscriptions." +
+                "followee_id where subscriptions.follower_id = 'my_user_id'";
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Publication.class));
+    }
+
+    public List<Publication> checkPublicationFromLike() {
+        String sql = "select * from likes where user_id = 'my_user_id' and publication_id = 'publication_id'";
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Publication.class));
+    }
 }

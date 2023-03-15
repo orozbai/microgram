@@ -15,4 +15,8 @@ public class PublicationService {
     public List<Publication> getPublicationOfOtherUsers() {
         return publicationDao.getPublicationOfOtherUsers();
     }
+
+    public List<Publication> selectPublicationsForYourFeedBasedOnSubscriptionsToOtherUsers() {
+        return publicationDao.selectPublicationsForYourFeedBasedOnSubscriptionsToOtherUsers();
+    }
 }

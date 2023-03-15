@@ -9,4 +9,5 @@ public class Publication {
     private String imageLink;
     private String description;
     private LocalDateTime publicationDateTime;
+    private String likes;
 }

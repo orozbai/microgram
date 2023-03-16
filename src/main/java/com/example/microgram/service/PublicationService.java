@@ -41,7 +41,7 @@ public class PublicationService {
                 "publicationDateTime TIMESTAMP," +
                 "likes integer)";
         String customerEntryQuery = "insert into publications(id, imageLink, description, publicationDateTime, likes)" +
-                "values(1, 'https://www.example.com/png.1', 'some desc..', '2022-05-01 12:30:00', 4)";
+                "values(1, 'https://www.example.com/png.1', 'some text..', '2022-05-01 12:30:00', 4)";
         executeUpdate(customerTableQuery);
         executeUpdate(customerEntryQuery);
     }

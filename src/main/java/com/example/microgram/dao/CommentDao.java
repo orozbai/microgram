@@ -15,6 +15,7 @@ public class CommentDao {
 
     //выбрать все комментарии из определенной публикации
     public List<Comment> getCommentsFromPublication() {
+        //1 должен быть заменен на айди публикации которая требуется
         String sql = "select * from comments where publication_id = 1";
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Comment.class));
     }

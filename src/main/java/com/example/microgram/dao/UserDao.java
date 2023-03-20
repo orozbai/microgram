@@ -28,14 +28,25 @@ public class UserDao {
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(User.class));
     }
 
-    public List<User> checkUserFromEmail() {
-        String sql = "select * from users where email like 'user@example.com'";
+    public User checkUserFromEmail(String email) {
+        String sql = String.format("select * from users where email like %s", email);
         var user = jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(User.class));
-        if (user != null) {
-            return user;
-        } else {
-            // доработать логику возвращения если пользователя нету
-            return null;
+        for (User value : user) {
+            if (value.getAccountName().contains(email)) {
+                return value;
+            }
         }
+        return null;
+    }
+
+    public User checkUserFromAccountName(String accountName) {
+        String sql = String.format("select * from users where accountName like %s", accountName);
+        var user = jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(User.class));
+        for (User value : user) {
+            if (value.getAccountName().contains(accountName)) {
+                return value;
+            }
+        }
+        return null;
     }
 }

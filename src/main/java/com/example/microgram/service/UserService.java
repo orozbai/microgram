@@ -73,7 +73,11 @@ public class UserService {
         return userDao.getUsersFromEmail();
     }
 
-    public List<User> checkUserFromEmail() {
-        return userDao.checkUserFromEmail();
+    public String checkUserFromEmail(String email) {
+        return userDao.checkUserFromEmail(email).getEmail();
+    }
+
+    public String checkUserFromAccountName(String accountName) {
+        return userDao.checkUserFromAccountName(accountName).getAccountName();
     }
 }

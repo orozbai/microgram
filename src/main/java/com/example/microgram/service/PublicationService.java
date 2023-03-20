@@ -56,8 +56,8 @@ public class PublicationService {
         }
     }
 
-    public List<Publication> getPublicationOfOtherUsers() {
-        return publicationDao.getPublicationOfOtherUsers();
+    public List<Publication> getPublicationOfOtherUsers(Long userId) {
+        return publicationDao.getPublicationOfOtherUsers(userId);
     }
 
     public List<Publication> selectPublicationsForYourFeedBasedOnSubscriptionsToOtherUsers() {

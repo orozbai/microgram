@@ -13,9 +13,10 @@ import java.util.List;
 public class PublicationDao {
     private final JdbcTemplate jdbcTemplate;
 
-    public List<Publication> getPublicationOfOtherUsers() {
+    public List<Publication> getPublicationOfOtherUsers(Long userId) {
         // my_user_id должен быть заменен на идентификатор текущего пользователя
-        String sql = "select * from publication where user_id <> 'my_user_id'";
+        String sql = String.format("select * from publication where user_id <> %s", userId);
+//        String sql = "select * from publication where user_id <> userId";
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Publication.class));
     }
 

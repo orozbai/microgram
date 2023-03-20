@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 @Data
 public class SubscriptionsPerUser {
-    private String whoIsSigning;
-    private String whoIsSubscribedTo;
+    private User whoIsSigning;
+    private User whoIsSubscribedTo;
     private LocalDateTime eventDate;
 }

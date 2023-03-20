@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 
 @Data
 public class ILikeIt {
-    private String whoMarkedThe;
-    private String whatWasTheMark;
+    private User whoMarkedThe;
+    private Publication whatWasTheMark;
     private LocalDateTime stampDateTime;
 }

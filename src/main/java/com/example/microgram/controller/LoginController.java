@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class LoginController {
     @PostMapping
     public ResponseEntity<String> authenticateUser(@RequestBody LoginDto loginDto) {
-        //аунтификация user
+        //TODO аунтификация user
 
         return new ResponseEntity<>("User signed-in successfully", HttpStatus.OK);
     }

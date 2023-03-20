@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class SignUpController {
     @PostMapping
     public ResponseEntity<?> registerUser(@RequestBody SignUpDto signUpDto) {
-        //проверить что в базе нету такого пользователя проверка по email и username
+        //TODO проверить что в базе нету такого пользователя проверка по email и username
 
-        //создать объект пользователя
-        //сохранить его
+        //TODO создать объект пользователя
+        //TODO сохранить его
         return new ResponseEntity<>("User registered successfully", HttpStatus.OK);
     }
 }

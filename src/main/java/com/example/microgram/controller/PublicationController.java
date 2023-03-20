@@ -23,4 +23,13 @@ public class PublicationController {
         model.addAttribute("publications", publications);
         return "publications";
     }
+
+    //TODO сделать метод добавление новой публикации
+
+    //TODO сделать метод удаление своей публикации
+
+    //TODO сделать метод добавление коментариев к публикации
+
+    //TODO сделать метод 'мне понравилось' на публикации
+
 }

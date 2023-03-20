@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/search")
 public class SearchUsersController {
     public ResponseEntity<?> searchUsers(@RequestBody SearchUsersDto searchUsersDto) {
-        // поиск пользователей по имени, email, имени учетной записи
+        //TODO поиск пользователей по имени, email, имени учетной записи
 
         return new ResponseEntity<>("User found", HttpStatus.OK);
     }

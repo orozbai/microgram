@@ -61,7 +61,7 @@ public class PublicationDao extends BaseDao {
     }
 
     public void deleteById(Long id) {
-        String sql = "delete from event " +
+        String sql = "delete from publications " +
                 "where id = ?";
         jdbcTemplate.update(sql);
     }
@@ -69,5 +69,11 @@ public class PublicationDao extends BaseDao {
     public List<Publication> getPublicationById(Long userId) {
         String sql = String.format("SELECT * FROM publications where id = '%s'", userId);
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Publication.class));
+    }
+
+    public void deleteCommentById(Long commentId) {
+        String sql = "delete from comments " +
+                "where id = ?";
+        jdbcTemplate.update(sql);
     }
 }

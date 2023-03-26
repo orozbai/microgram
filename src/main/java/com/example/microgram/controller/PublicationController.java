@@ -52,6 +52,13 @@ public class PublicationController {
         return commentService.addComment(id, commentDto);
     }
 
+    @DeleteMapping("/publications/{commentId}")
+    public ResponseEntity<Void> deleteComment(@PathVariable Long commentId) {
+        if (publicationService.deleteComment(commentId))
+            return ResponseEntity.noContent().build();
+        return ResponseEntity.notFound().build();
+    }
+
     @PostMapping("/publications/{postId}/like/{userId}/")
     public String likePublication(@PathVariable Long userId, @PathVariable Long postId) {
         if (publicationService.likePublication(userId, postId)) {

@@ -50,4 +50,9 @@ public class PublicationService {
     public boolean likePublication(Long id, Long postId) {
         return likeItDao.likePublication(id, postId);
     }
+
+    public boolean deleteComment(Long commentId) {
+        publicationDao.deleteCommentById(commentId);
+        return true;
+    }
 }

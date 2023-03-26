@@ -28,6 +28,13 @@ public class PublicationController {
         return "publications";
     }
 
+    @GetMapping("/publications/{id}")
+    public String showPublicationById(@PathVariable Long id, Model model) {
+        List<Publication> publications = publicationService.getPublicationById(id);
+        model.addAttribute("publications", publications);
+        return "publications";
+    }
+
     @PostMapping("/publications/add")
     public PublicationDto addPublication(@RequestBody PublicationDto publicationDto) {
         return publicationService.addPublication(publicationDto);
@@ -39,11 +46,18 @@ public class PublicationController {
             return ResponseEntity.noContent().build();
         return ResponseEntity.notFound().build();
     }
-    
+
     @PostMapping("/publications/{id}/comment")
     public CommentDto addCommentToPost(@PathVariable Long id, @RequestBody CommentDto commentDto) {
         return commentService.addComment(id, commentDto);
     }
-    //TODO сделать метод 'мне понравилось' на публикации
 
+    @PostMapping("/publications/{postId}/like/{userId}/")
+    public String likePublication(@PathVariable Long userId, @PathVariable Long postId) {
+        if (publicationService.likePublication(userId, postId)) {
+            return "liked";
+        } else {
+            return "You already liked";
+        }
+    }
 }

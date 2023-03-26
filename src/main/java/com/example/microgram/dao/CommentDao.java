@@ -16,8 +16,8 @@ public class CommentDao extends BaseDao {
         super(jdbcTemplate, namedParameterJdbcTemplate);
     }
 
-    public List<Comment> getCommentsFromPublication(Long id) {
-        String sql = "select * from comments where publication_id = '" + id + "'";
+    public List<Comment> getCommentsFromPublication() {
+        String sql = "select * from comments";
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Comment.class));
     }
 

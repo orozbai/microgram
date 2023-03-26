@@ -1,11 +1,10 @@
 package com.example.microgram.service;
 
+import com.example.microgram.dao.LikeItDao;
 import com.example.microgram.dao.PublicationDao;
-import com.example.microgram.dto.CommentDto;
 import com.example.microgram.dto.PublicationDto;
 import com.example.microgram.entity.Publication;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,6 +13,8 @@ import java.util.List;
 public class PublicationService {
     @Autowired
     private PublicationDao publicationDao;
+    @Autowired
+    private LikeItDao likeItDao;
 
     public List<Publication> getPublicationOfOtherUsers(Long userId) {
         return publicationDao.getPublicationOfOtherUsers(userId);
@@ -44,5 +45,9 @@ public class PublicationService {
     public boolean deletePublicationById(Long id) {
         publicationDao.deleteById(id);
         return true;
+    }
+
+    public boolean likePublication(Long id, Long postId) {
+        return likeItDao.likePublication(id, postId);
     }
 }

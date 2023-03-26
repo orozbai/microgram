@@ -1,8 +1,6 @@
 package com.example.microgram.dao;
 
-import com.example.microgram.dto.CommentDto;
 import com.example.microgram.entity.Publication;
-import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -27,11 +25,6 @@ public class PublicationDao extends BaseDao {
     public List<Publication> selectPublicationsOtherUsers() {
         String sql = "select * from publications inner join subscriptions ON publications.user_id = subscriptions." +
                 "whoIsSubscribedTo where subscriptions.whoIsSubscribedTo = 'my_user_id'";
-        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Publication.class));
-    }
-
-    public List<Publication> checkPublicationFromLike(Long userId, Long publicationId) {
-        String sql = String.format("select * from likes where user_id = '%s' and publication_id = '%s'", userId, publicationId);
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Publication.class));
     }
 

@@ -1,17 +1,13 @@
-package com.example.microgram.entity;
+package com.example.microgram.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import com.example.microgram.entity.Publication;
+import com.example.microgram.entity.User;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-public class ILikeIt {
+public class LikeItDto {
     private Integer user_id;
     private Integer publication_id;
     private User whoMarkedThe;

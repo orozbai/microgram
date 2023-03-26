@@ -1,8 +1,14 @@
 package com.example.microgram.dao;
 
+import com.example.microgram.entity.ILikeIt;
+import com.example.microgram.entity.Publication;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
+
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Component
 public class LikeItDao extends BaseDao {
@@ -24,5 +30,24 @@ public class LikeItDao extends BaseDao {
                 "(1, '1', '3', '2022-03-20 10:30:00'),\n" +
                 "(2, '2', '2', '2022-04-20 10:40:00'),\n" +
                 "(3, '3', '1', '2022-05-20 10:50:00');\n");
+    }
+
+    public boolean checkFromLike(Long postId, Long id) {
+        String sql = String.format("select * from likes where publication_id = '%s' and user_id = '%s'", postId, id);
+        var list = jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(ILikeIt.class));
+        return list.size() == 0;
+    }
+
+    public boolean likePublication(Long id, Long postId) {
+        LocalDateTime localDateTime = LocalDateTime.now();
+        Timestamp timestamp = Timestamp.valueOf(localDateTime);
+        if (checkFromLike(postId, id)) {
+            jdbcTemplate.update("INSERT INTO likes (user_id, publication_id, likeTime) \n" +
+                    "VALUES \n" +
+                    "('" + id + "' '" + postId + "' '" + timestamp + "')");
+            return true;
+        } else {
+            return false;
+        }
     }
 }

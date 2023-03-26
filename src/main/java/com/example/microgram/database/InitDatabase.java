@@ -13,8 +13,8 @@ public class InitDatabase {
         return (args) -> {
             userDao.createTable();
             subscriptionDao.createTable();
-            commentDao.createTable();
             publicationDao.createTable();
+            commentDao.createTable();
             likeItDao.createTable();
         };
     }

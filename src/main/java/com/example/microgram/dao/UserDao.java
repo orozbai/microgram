@@ -81,4 +81,10 @@ public class UserDao extends BaseDao {
                 "(2, 'qwer', 'emeli@gmail.com', '123', '0', '0', '0', 'aman', 'zoevich'),\n" +
                 "(3, 'qwer', 'one@gmail.com', '123', '0', '0', '0', 'rus', 'rusovich');\n");
     }
+
+    public void saveToBase(User user) {
+        jdbcTemplate.update("INSERT INTO users (accountName, email, password) \n" +
+                "VALUES \n" +
+                "('" + user.getAccountName() + "', '" + user.getEmail() + "', '" + user.getPassword() + "')");
+    }
 }

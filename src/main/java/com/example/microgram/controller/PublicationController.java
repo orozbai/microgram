@@ -1,13 +1,15 @@
 package com.example.microgram.controller;
 
+import com.example.microgram.dto.CommentDto;
+import com.example.microgram.dto.PublicationDto;
 import com.example.microgram.entity.Publication;
+import com.example.microgram.service.CommentService;
 import com.example.microgram.service.PublicationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -16,6 +18,8 @@ import java.util.List;
 public class PublicationController {
     @Autowired
     private PublicationService publicationService;
+    @Autowired
+    private CommentService commentService;
 
     @GetMapping("/publications/{userId}")
     public String showPublications(@PathVariable Long userId, Model model) {
@@ -24,12 +28,22 @@ public class PublicationController {
         return "publications";
     }
 
-    //TODO сделать метод добавление новой публикации
+    @PostMapping("/publications/add")
+    public PublicationDto addPublication(@RequestBody PublicationDto publicationDto) {
+        return publicationService.addPublication(publicationDto);
+    }
 
-    //TODO сделать метод удаление своей публикации
-
-    //TODO сделать метод добавление коментариев к публикации
-
+    @DeleteMapping("/publications/{id}")
+    public ResponseEntity<Void> deletePublicationById(@PathVariable Long id) {
+        if (publicationService.deletePublicationById(id))
+            return ResponseEntity.noContent().build();
+        return ResponseEntity.notFound().build();
+    }
+    
+    @PostMapping("/publications/{id}/comment")
+    public CommentDto addCommentToPost(@PathVariable Long id, @RequestBody CommentDto commentDto) {
+        return commentService.addComment(id, commentDto);
+    }
     //TODO сделать метод 'мне понравилось' на публикации
 
 }

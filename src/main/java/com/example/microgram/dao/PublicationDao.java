@@ -1,12 +1,15 @@
 package com.example.microgram.dao;
 
+import com.example.microgram.dto.CommentDto;
 import com.example.microgram.entity.Publication;
+import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDateTime;
+import java.sql.PreparedStatement;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Component
@@ -38,16 +41,40 @@ public class PublicationDao extends BaseDao {
                 "id SERIAL PRIMARY KEY," +
                 "imageLink TEXT," +
                 "description TEXT," +
-                "publicationTime TIMESTAMP NOT NULL DEFAULT '2000-00-00 10:10:10'," +
+                "publicationTime TIMESTAMP NOT NULL DEFAULT '2000-01-01 10:10:10'," +
                 "likes INTEGER NOT NULL DEFAULT '0'," +
-                "user_id INTEGER NOT NULL DEFAULT '0'," +
-                "comment_id INTEGER NOT NULL DEFAULT '0'," +
-                "FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE," +
-                "FOREIGN KEY (comment_id) REFERENCES comments(id) ON DELETE CASCADE);" +
+                "user_id INTEGER," +
+                "FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE);" +
                 "INSERT INTO publications (id, imageLink, description, publicationTime, likes, user_id) \n" +
                 "VALUES \n" +
                 "(1, 'image link', 'some text', '2022-03-20 10:30:00', '0', '1'),\n" +
                 "(2, 'image link', 'some text', '2022-04-20 10:40:00', '0', '2'),\n" +
                 "(3, 'image link', 'some text', '2022-05-20 10:50:00', '0', '3');\n");
+    }
+
+    public void save(Publication publication) {
+        String sql = "insert into publications(imageLink, description, publicationTime, likes, user_id, comment_id) " +
+                "values(?,?,?,?,?,?)";
+        jdbcTemplate.update(con -> {
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setString(1, publication.getImageLink());
+            ps.setString(2, publication.getDescription());
+            ps.setTimestamp(3, Timestamp.valueOf(publication.getPublicationTime()));
+            ps.setInt(4, publication.getLikes());
+            ps.setInt(5, publication.getUser_id());
+            ps.setInt(6, publication.getComment_id());
+            return ps;
+        });
+    }
+
+    public void deleteById(Long id) {
+        String sql = "delete from event " +
+                "where id = ?";
+        jdbcTemplate.update(sql);
+    }
+
+    public List<Publication> getPublicationById(Long userId) {
+        String sql = String.format("SELECT * FROM publications where id = '%s'", userId);
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Publication.class));
     }
 }

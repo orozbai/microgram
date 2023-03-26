@@ -31,6 +31,10 @@ public class UserService {
         return userDao.checkUserFromAccountName(accountName).getAccountName();
     }
 
+    public void saveToBase(User user) {
+        userDao.saveToBase(user);
+    }
+
     public boolean login(String usernameOrEmail, String password) {
         return userDao.login(usernameOrEmail, password);
     }

@@ -16,7 +16,7 @@ public class LikeItDao extends BaseDao {
                 "id SERIAL PRIMARY KEY," +
                 "user_id INTEGER NOT NULL DEFAULT '0'," +
                 "publication_id INTEGER NOT NULL DEFAULT '0'," +
-                "likeTime TIMESTAMP NOT NULL DEFAULT '2000-00-00 10:10:10'," +
+                "likeTime TIMESTAMP NOT NULL DEFAULT '2000-01-01 10:10:10'," +
                 "FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE," +
                 "FOREIGN KEY (publication_id) REFERENCES publications(id) ON DELETE CASCADE );" +
                 "INSERT INTO likes (id, user_id, publication_id, likeTime) \n" +

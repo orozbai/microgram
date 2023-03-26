@@ -15,18 +15,18 @@ public class UserDao extends BaseDao {
         super(jdbcTemplate, namedParameterJdbcTemplate);
     }
 
-    public List<User> getUsersFromName() {
-        String sql = "select * from users where name like '%Boris%'";
+    public List<User> getUsersFromName(String name) {
+        String sql = "select * from users where name like '%" + name + "%'";
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(User.class));
     }
 
     public List<User> getUsersFromAccountName(String name) {
-        String sql = String.format("select * from users where accountName like %s", name);
+        String sql = "select * from users where accountName like '%" + name + "%'";
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(User.class));
     }
 
     public List<User> getUsersFromEmail(String email) {
-        String sql = String.format("select * from users where email like '%s'", email);
+        String sql = "select * from users where email like '%" + email + "%'";
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(User.class));
     }
 

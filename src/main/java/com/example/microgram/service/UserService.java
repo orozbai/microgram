@@ -11,8 +11,8 @@ public class UserService {
     @Autowired
     private UserDao userDao;
 
-    public List<User> getUsersFromName() {
-        return userDao.getUsersFromName();
+    public List<User> getUsersFromName(String name) {
+        return userDao.getUsersFromName(name);
     }
 
     public List<User> getUserFromAccountName(String name) {

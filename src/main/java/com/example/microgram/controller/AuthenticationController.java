@@ -1,7 +1,9 @@
 package com.example.microgram.controller;
 
+import com.example.microgram.dto.LoginDto;
 import com.example.microgram.dto.SignUpDto;
 import com.example.microgram.entity.User;
+import com.example.microgram.service.AuthenticationService;
 import com.example.microgram.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,17 +11,25 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/sign-up")
-public class SignUpController {
+public class AuthenticationController {
     @Autowired
     private UserService userService;
 
-    @PostMapping
+    @PostMapping("/login")
+    public ResponseEntity<Boolean> authenticateUser(@RequestBody LoginDto loginDto) {
+        if (userService.login(loginDto.getUsernameOrEmail(), loginDto.getPassword())) {
+            return new ResponseEntity<>(userService.login(loginDto.getUsernameOrEmail(),
+                    loginDto.getPassword()), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/sign-up")
     public ResponseEntity<?> registerUser(@RequestBody SignUpDto signUpDto) {
         //TODO проверить что в базе нету такого пользователя проверка по email и username
         if (userService.checkUserFromAccountName(signUpDto.getUsername()).contains(signUpDto.getUsername())) {

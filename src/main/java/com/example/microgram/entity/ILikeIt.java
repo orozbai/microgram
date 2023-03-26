@@ -8,5 +8,5 @@ import java.time.LocalDateTime;
 public class ILikeIt {
     private User whoMarkedThe;
     private Publication whatWasTheMark;
-    private LocalDateTime stampDateTime;
+    private LocalDateTime likeTime;
 }

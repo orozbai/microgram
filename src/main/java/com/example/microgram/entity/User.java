@@ -12,4 +12,6 @@ public class User {
     private Integer followersCount;
     private String name;
     private String surname;
+    private Integer publicationId;
+    private Integer subscriptionId;
 }

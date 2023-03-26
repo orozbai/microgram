@@ -8,6 +8,6 @@ import java.time.LocalDateTime;
 public class Publication {
     private String imageLink;
     private String description;
-    private LocalDateTime publicationDateTime;
-    private String likes;
+    private LocalDateTime publicationTime;
+    private Integer likes;
 }

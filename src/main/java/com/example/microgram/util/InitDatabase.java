@@ -1,4 +1,4 @@
-package com.example.microgram.database;
+package com.example.microgram.util;
 
 import com.example.microgram.dao.*;
 import org.springframework.boot.CommandLineRunner;

@@ -28,7 +28,7 @@ public class PublicationController {
         return "publications";
     }
 
-    @GetMapping("/publications/{id}")
+    @GetMapping("/publication/{id}")
     public String showPublicationById(@PathVariable Long id, Model model) {
         List<Publication> publications = publicationService.getPublicationById(id);
         model.addAttribute("publications", publications);

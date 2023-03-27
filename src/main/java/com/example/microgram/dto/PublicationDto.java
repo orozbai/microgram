@@ -15,7 +15,6 @@ public class PublicationDto {
     private LocalDateTime publicationTime;
     private Integer likes;
     private Integer user_id;
-    private Integer comment_id;
 
     public static PublicationDto from(Publication publication) {
         return builder()
@@ -24,7 +23,6 @@ public class PublicationDto {
                 .publicationTime(publication.getPublicationTime())
                 .likes(publication.getLikes())
                 .user_id(publication.getUser_id())
-                .comment_id(publication.getComment_id())
                 .build();
     }
 }

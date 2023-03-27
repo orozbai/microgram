@@ -20,8 +20,8 @@ public class PublicationService {
         return publicationDao.getPublicationOfOtherUsers(userId);
     }
 
-    public List<Publication> selectPublicationsSubscribedOtherUsers() {
-        return publicationDao.selectPublicationsOtherUsers();
+    public List<Publication> selectAllPublications() {
+        return publicationDao.selectAllPublications();
     }
 
     public PublicationDto addPublication(PublicationDto publicationDto) {
@@ -31,7 +31,6 @@ public class PublicationService {
                 .publicationTime(publicationDto.getPublicationTime())
                 .likes(publicationDto.getLikes())
                 .user_id(publicationDto.getUser_id())
-                .comment_id(publicationDto.getComment_id())
                 .build();
 
         publicationDao.save(publication);

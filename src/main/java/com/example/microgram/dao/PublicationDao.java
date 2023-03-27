@@ -22,9 +22,8 @@ public class PublicationDao extends BaseDao {
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Publication.class));
     }
 
-    public List<Publication> selectPublicationsOtherUsers() {
-        String sql = "select * from publications inner join subscriptions ON publications.user_id = subscriptions." +
-                "whoIsSubscribedTo where subscriptions.whoIsSubscribedTo = 'my_user_id'";
+    public List<Publication> selectAllPublications() {
+        String sql = "select * from publications";
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Publication.class));
     }
 
@@ -40,14 +39,14 @@ public class PublicationDao extends BaseDao {
                 "FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE);" +
                 "INSERT INTO publications (id, imageLink, description, publicationTime, likes, user_id) \n" +
                 "VALUES \n" +
-                "(1, 'image link', 'some text', '2022-03-20 10:30:00', '0', '1'),\n" +
-                "(2, 'image link', 'some text', '2022-04-20 10:40:00', '0', '2'),\n" +
-                "(3, 'image link', 'some text', '2022-05-20 10:50:00', '0', '3');\n");
+                "(100, 'image link', 'some text', '2022-03-20 10:30:00', '0', '100'),\n" +
+                "(200, 'image link', 'some text', '2022-04-20 10:40:00', '0', '200'),\n" +
+                "(300, 'image link', 'some text', '2022-05-20 10:50:00', '0', '300');\n");
     }
 
     public void save(Publication publication) {
-        String sql = "insert into publications(imageLink, description, publicationTime, likes, user_id, comment_id) " +
-                "values(?,?,?,?,?,?)";
+        String sql = "insert into publications(imageLink, description, publicationTime, likes, user_id) " +
+                "values(?,?,?,?,?)";
         jdbcTemplate.update(con -> {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setString(1, publication.getImageLink());
@@ -55,7 +54,6 @@ public class PublicationDao extends BaseDao {
             ps.setTimestamp(3, Timestamp.valueOf(publication.getPublicationTime()));
             ps.setInt(4, publication.getLikes());
             ps.setInt(5, publication.getUser_id());
-            ps.setInt(6, publication.getComment_id());
             return ps;
         });
     }

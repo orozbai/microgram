@@ -30,15 +30,17 @@ public class UserDao extends BaseDao {
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(User.class));
     }
 
-    public User checkUserFromEmail(String email) {
+    public String checkUserFromEmail(String email) {
         String sql = String.format("select * from users where email like '%s'", email);
         var user = jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(User.class));
         for (User value : user) {
-            if (value.getAccountName().contains(email)) {
-                return value;
+            if (value.getEmail().contains(email)) {
+                return value.getEmail();
             }
         }
-        return null;
+        User userEmail = new User();
+        userEmail.setAccountName("d2ax21j424sdi21iih3o4c2348c24dn24d");
+        return userEmail.getEmail();
     }
 
     public User checkUserFromAccountName(String accountName) {
@@ -49,7 +51,9 @@ public class UserDao extends BaseDao {
                 return value;
             }
         }
-        return null;
+        User userName = new User();
+        userName.setAccountName("d2ax21j424sdi21iih3o4c2348c24dn24d");
+        return userName;
     }
 
     public boolean login(String usernameOrEmail, String password) {
@@ -66,9 +70,9 @@ public class UserDao extends BaseDao {
     public void createTable() {
         jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS users (" +
                 "id SERIAL PRIMARY KEY," +
-                "accountName VARCHAR(40) NOT NULL DEFAULT 'account name'," +
-                "email VARCHAR(40) NOT NULL DEFAULT 'admin@gmail.com'," +
-                "password VARCHAR(40) NOT NULL DEFAULT 'password'," +
+                "accountName VARCHAR(100) NOT NULL DEFAULT 'account name'," +
+                "email VARCHAR(100) NOT NULL DEFAULT 'admin@gmail.com'," +
+                "password VARCHAR(100) NOT NULL DEFAULT 'password'," +
                 "postsCount INTEGER NOT NULL DEFAULT '0'," +
                 "subscriptionsCount INTEGER NOT NULL DEFAULT '0'," +
                 "followersCount INTEGER NOT NULL DEFAULT '0'," +
@@ -77,9 +81,9 @@ public class UserDao extends BaseDao {
                 "INSERT INTO users (id, accountName, email, password, postsCount, subscriptionsCount," +
                 "followersCount, name, surname) \n" +
                 "VALUES \n" +
-                "(1, 'qwer', 'john@gmail.com', '123', '0', '0', '0', 'oroz', 'altyn'),\n" +
-                "(2, 'qwer', 'emeli@gmail.com', '123', '0', '0', '0', 'aman', 'zoevich'),\n" +
-                "(3, 'qwer', 'one@gmail.com', '123', '0', '0', '0', 'rus', 'rusovich');\n");
+                "(100, 'qwer', 'john@gmail.com', '123', '0', '0', '0', 'oroz', 'altyn'),\n" +
+                "(200, 'qwer', 'emeli@gmail.com', '123', '0', '0', '0', 'aman', 'zoevich'),\n" +
+                "(300, 'qwer', 'one@gmail.com', '123', '0', '0', '0', 'rus', 'rusovich');\n");
     }
 
     public void saveToBase(User user) {

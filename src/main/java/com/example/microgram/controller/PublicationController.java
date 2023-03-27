@@ -22,13 +22,21 @@ public class PublicationController {
     private CommentService commentService;
 
     @GetMapping("/publications/{userId}")
+    //просмотр публикации всех кроме своих публикаций userId свой айди в бд
     public String showPublications(@PathVariable Long userId, Model model) {
         List<Publication> publications = publicationService.getPublicationOfOtherUsers(userId);
         model.addAttribute("publications", publications);
         return "publications";
     }
 
-    @GetMapping("/publication/{id}")
+    @GetMapping("/watch")
+    public String showAllPosts(Model model) {
+        List<Publication> publications = publicationService.selectAllPublications();
+        model.addAttribute("publications", publications);
+        return "publications";
+    }
+
+    @GetMapping("/publications/{id}")
     public String showPublicationById(@PathVariable Long id, Model model) {
         List<Publication> publications = publicationService.getPublicationById(id);
         model.addAttribute("publications", publications);

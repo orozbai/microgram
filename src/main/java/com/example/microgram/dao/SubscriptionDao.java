@@ -20,8 +20,8 @@ public class SubscriptionDao extends BaseDao {
                 "FOREIGN KEY (whoIsSigning) REFERENCES users(id) ON DELETE CASCADE );" +
                 "INSERT INTO subscriptions (id, whoIsSigning, whoIsSubscribedTo) \n" +
                 "VALUES \n" +
-                "(1, '1', '3'),\n" +
-                "(2, '2', '2'),\n" +
-                "(3, '3', '1');\n");
+                "(100, '100', '300'),\n" +
+                "(200, '200', '200'),\n" +
+                "(300, '300', '100');\n");
     }
 }

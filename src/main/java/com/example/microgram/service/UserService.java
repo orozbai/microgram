@@ -5,6 +5,7 @@ import com.example.microgram.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class UserService {
@@ -24,11 +25,13 @@ public class UserService {
     }
 
     public String checkUserFromEmail(String email) {
-        return userDao.checkUserFromEmail(email).getEmail();
+        var emails = userDao.checkUserFromEmail(email);
+        return Objects.requireNonNullElse(emails, "s23dal3213sj32323ajl42dj24sdl2sjd2dsd");
     }
 
     public String checkUserFromAccountName(String accountName) {
-        return userDao.checkUserFromAccountName(accountName).getAccountName();
+        var name = userDao.checkUserFromAccountName(accountName).getAccountName();
+        return Objects.requireNonNullElse(name, "sh0129lsf012kd9d21das23wf2");
     }
 
     public void saveToBase(User user) {

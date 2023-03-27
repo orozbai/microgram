@@ -31,13 +31,13 @@ public class CommentDao extends BaseDao {
                 "FOREIGN KEY (publication_id) REFERENCES publications(id) ON DELETE CASCADE);" +
                 "INSERT INTO comments (id, commentText, commentTime, publication_id) \n" +
                 "VALUES \n" +
-                "(1, 'some text', '2022-03-20 10:30:00', '1'),\n" +
-                "(2, 'some text', '2022-04-20 10:40:00', '2'),\n" +
-                "(3, 'some text', '2022-05-20 10:50:00', '3');\n");
+                "(100, 'some text', '2022-03-20 10:30:00', '100'),\n" +
+                "(200, 'some text', '2022-04-20 10:40:00', '200'),\n" +
+                "(300, 'some text', '2022-05-20 10:50:00', '300');\n");
     }
 
     public CommentDto addComment(Long id, CommentDto commentDto) {
-        String sql = "INSERT INTO comments (commentText, commentTime, publication_id) VALUES (?, ?)";
+        String sql = "INSERT INTO comments (commentText, commentTime, publication_id) VALUES (?, ?, ?)";
         Object[] params = new Object[]{commentDto.getCommentText(), commentDto.getCommentTime(), id};
         jdbcTemplate.update(sql, params);
         return commentDto;

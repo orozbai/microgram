@@ -27,9 +27,9 @@ public class LikeItDao extends BaseDao {
                 "FOREIGN KEY (publication_id) REFERENCES publications(id) ON DELETE CASCADE );" +
                 "INSERT INTO likes (id, user_id, publication_id, likeTime) \n" +
                 "VALUES \n" +
-                "(1, '1', '3', '2022-03-20 10:30:00'),\n" +
-                "(2, '2', '2', '2022-04-20 10:40:00'),\n" +
-                "(3, '3', '1', '2022-05-20 10:50:00');\n");
+                "(100, '100', '300', '2022-03-20 10:30:00'),\n" +
+                "(200, '200', '200', '2022-04-20 10:40:00'),\n" +
+                "(300, '300', '100', '2022-05-20 10:50:00');\n");
     }
 
     public boolean checkFromLike(Long postId, Long id) {

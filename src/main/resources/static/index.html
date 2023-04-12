@@ -4,9 +4,16 @@
     <meta charset="UTF-8">
     <title>Lesson 57. Javascript 101</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
+          integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
+            crossorigin="anonymous"></script>
 </head>
 <body>
-Содержимое страницы
 <div class="comment">
     <div class="comment-header">
         <div class="comment-author">
@@ -19,16 +26,32 @@
         Comment text here.
     </div>
 </div>
-<div class="posts-container">
+<div class="container posts-container">
     <div class="post">
-        <img src="${post.imagePath}" alt="post image">
-        <div class="post-info">
-            <p class="post-description">post description</p>
-            <p class="post-time">posted on April 9, 2023 at 19:42</p>
-            <p class="post-user">posted by user@example.com</p>
+        <!-- Изображение -->
+        <img class="post-image" id="post-image"
+             src="https://i.pinimg.com/564x/7b/e8/0e/7be80e1dd312352fb3616ff285f18037.jpg"
+             alt="post image">
+        <div id="heart-container">
+            <div id="heart"></div>
         </div>
+        <!-- Лайки -->
+        <div class="post-likes">
+            <svg xmlns="http://www.w3.org/2000/svg" width="30" id="post-like-icon" height="30" fill="currentColor"
+                 class="bi bi-heart-fill" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
+            </svg>
+        </div>
+        <!-- Комментарии -->
+        <div class="post-comments">
+            <h2>Комментарии</h2>
+            <!-- Здесь можно разместить блок с комментариями -->
+        </div>
+        <!-- Кнопка "Добавить в избранное" -->
+        <a class="add-to-favorites" href="#">Добавить в избранное</a>
     </div>
 </div>
+<script src="post.js"></script>
 <script src="script.js"></script>
 </body>
 </html>

@@ -1,0 +1,29 @@
+function likeUnlike() {
+    const currentColor = postIconLike.style.color
+    if (currentColor === 'red' || currentColor === 'rgb(255, 0,0)') {
+        postIconLike.style.color = 'grey';
+    } else {
+        postIconLike.style.color = 'red';
+    }
+}
+
+postIconLike = document.getElementById('post-like-icon');
+
+postIconLike.addEventListener('click', likeUnlike)
+
+document.getElementById("post-image").addEventListener("dblclick", function (event) {
+    const currentColor = postIconLike.style.color
+    if (currentColor === 'red' || currentColor === 'rgb(255, 0,0)') {
+        postIconLike.style.color = 'grey';
+    } else {
+        postIconLike.style.color = 'red';
+    }
+
+    const heart = document.getElementById("heart");
+    heart.style.top = (event.clientY - heart.offsetHeight / 2) + "px";
+    heart.style.left = (event.clientX - heart.offsetWidth / 2) + "px";
+    heart.style.opacity = "1";
+    setTimeout(function () {
+        heart.style.opacity = "0";
+    }, 1000);
+});

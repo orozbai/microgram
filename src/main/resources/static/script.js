@@ -71,7 +71,7 @@ function postExampleConstructor(imagePath, description, timestamp, user) {
 }
 
 const post = new postExampleConstructor(
-    '#', // для проверки поста
+    'https://i.pinimg.com/564x/7b/e8/0e/7be80e1dd312352fb3616ff285f18037.jpg', // для проверки поста
     'description',
     Date.now(),
     'user@example.com'

@@ -91,4 +91,9 @@ public class UserDao extends BaseDao {
                 "VALUES \n" +
                 "('" + user.getAccountName() + "', '" + user.getEmail() + "', '" + user.getPassword() + "')");
     }
+
+    public List<User> getByEmail(String email) {
+        String sql = "SELECT * FROM client WHERE email LIKE '" + email + "'";
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(User.class));
+    }
 }

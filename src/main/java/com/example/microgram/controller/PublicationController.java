@@ -3,6 +3,7 @@ package com.example.microgram.controller;
 import com.example.microgram.dto.CommentDto;
 import com.example.microgram.dto.PublicationDto;
 import com.example.microgram.entity.Publication;
+import com.example.microgram.security.SecurityConfig;
 import com.example.microgram.service.CommentService;
 import com.example.microgram.service.PublicationService;
 import lombok.RequiredArgsConstructor;
@@ -21,10 +22,9 @@ public class PublicationController {
     @Autowired
     private CommentService commentService;
 
-    @GetMapping("/publications/{userId}")
-    //просмотр публикации всех кроме своих публикаций userId свой айди в бд
-    public String showPublications(@PathVariable Long userId, Model model) {
-        List<Publication> publications = publicationService.getPublicationOfOtherUsers(userId);
+    @GetMapping("/publications/")
+    public String showPublications(Model model) {
+        List<Publication> publications = publicationService.getPublicationOfOtherUsers(SecurityConfig.getCurrentUserEmail());
         model.addAttribute("publications", publications);
         return "publications";
     }

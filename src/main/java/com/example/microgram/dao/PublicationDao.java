@@ -17,8 +17,8 @@ public class PublicationDao extends BaseDao {
         super(jdbcTemplate, namedParameterJdbcTemplate);
     }
 
-    public List<Publication> getPublicationOfOtherUsers(Long userId) {
-        String sql = String.format("select * from publications where user_id <> '%s'", userId);
+    public List<Publication> getPublicationOfOtherUsers(String email) {
+        String sql = String.format("select * from publications where user_id <> '%s'", email);
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Publication.class));
     }
 

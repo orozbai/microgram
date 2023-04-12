@@ -16,8 +16,8 @@ public class PublicationService {
     @Autowired
     private LikeItDao likeItDao;
 
-    public List<Publication> getPublicationOfOtherUsers(Long userId) {
-        return publicationDao.getPublicationOfOtherUsers(userId);
+    public List<Publication> getPublicationOfOtherUsers(String email) {
+        return publicationDao.getPublicationOfOtherUsers(email);
     }
 
     public List<Publication> selectAllPublications() {

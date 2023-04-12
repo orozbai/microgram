@@ -1,0 +1,14 @@
+.post {
+    margin: 10px;
+    border: red solid 2px;
+}
+
+.comment {
+    margin-top: 10px;
+    border: green solid 2px;
+}
+
+.posts-container {
+    margin: 5px;
+    border: black solid 2px;
+}

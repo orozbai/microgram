@@ -41,4 +41,8 @@ public class UserService {
     public boolean login(String usernameOrEmail, String password) {
         return userDao.login(usernameOrEmail, password);
     }
+
+    public List<User> getByEmail(String email) {
+        return userDao.getByEmail(email);
+    }
 }

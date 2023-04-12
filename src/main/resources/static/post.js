@@ -27,3 +27,16 @@ document.getElementById("post-image").addEventListener("dblclick", function (eve
         heart.style.opacity = "0";
     }, 1000);
 });
+
+postIconFavorite = document.getElementById('post-favorite-icon');
+
+postIconFavorite.addEventListener('click', favoriteAdd);
+
+function favoriteAdd() {
+    const currentColor = postIconFavorite.style.color;
+    if (currentColor === 'grey') {
+        postIconFavorite.style.color = 'orange';
+    } else {
+        postIconFavorite.style.color = 'grey';
+    }
+}

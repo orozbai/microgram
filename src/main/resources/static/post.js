@@ -1,3 +1,5 @@
+'use strict'
+
 function likeUnlike() {
     const currentColor = postIconLike.style.color
     if (currentColor === 'red' || currentColor === 'rgb(255, 0,0)') {
@@ -7,6 +9,7 @@ function likeUnlike() {
     }
 }
 
+let postIconLike;
 postIconLike = document.getElementById('post-like-icon');
 
 postIconLike.addEventListener('click', likeUnlike)
@@ -28,6 +31,7 @@ document.getElementById("post-image").addEventListener("dblclick", function (eve
     }, 1000);
 });
 
+let postIconFavorite;
 postIconFavorite = document.getElementById('post-favorite-icon');
 
 postIconFavorite.addEventListener('click', favoriteAdd);
@@ -40,3 +44,9 @@ function favoriteAdd() {
         postIconFavorite.style.color = 'grey';
     }
 }
+
+document.getElementById('login-button').addEventListener('click', function () {
+    document.getElementById('splash-screen').style.display = 'none';
+
+    document.getElementById('main-content').style.display = 'flex';
+});

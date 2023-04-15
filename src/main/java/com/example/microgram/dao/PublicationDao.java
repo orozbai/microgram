@@ -49,7 +49,7 @@ public class PublicationDao extends BaseDao {
                 "values(?,?,?,?,?)";
         jdbcTemplate.update(con -> {
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setString(1, publication.getImageLink());
+            ps.setString(1, String.valueOf(publication.getImageLink()));
             ps.setString(2, publication.getDescription());
             ps.setTimestamp(3, Timestamp.valueOf(publication.getPublicationTime()));
             ps.setInt(4, publication.getLikes());

@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 
@@ -12,10 +13,9 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Publication {
-    private String imageLink;
+    private MultipartFile imageLink;
     private String description;
     private LocalDateTime publicationTime;
     private Integer likes;
     private Integer user_id;
-    private Integer comment_id;
 }

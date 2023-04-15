@@ -14,73 +14,44 @@
             crossorigin="anonymous"></script>
 </head>
 <body>
-<div id="splash-screen">
-    <button id="login-button">Login</button>
-</div>
-<div id="main-content" class="hidden">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">Navbar</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item active">
-                    <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Link</a>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown"
-                       aria-expanded="false">
-                        Dropdown
-                    </a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="#">Action</a>
-                        <a class="dropdown-item" href="#">Another action</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Something else here</a>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link disabled">Disabled</a>
-                </li>
-            </ul>
-            <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-            </form>
-        </div>
-    </nav>
-    <div class="container posts-container" id="posts-container">
+<div class="container">
+    <div class="posts-container" id="posts-container">
         <div class="post">
-            <img class="post-image" id="post-image"
+            <img class="post-image"
                  src="https://i.pinimg.com/564x/7b/e8/0e/7be80e1dd312352fb3616ff285f18037.jpg"
                  alt="post image">
-            <div id="heart-container">
-                <div id="heart"></div>
+            <div class="heart-container">
+                <div class="heart"></div>
             </div>
             <div class="post-likes">
-                <svg xmlns="http://www.w3.org/2000/svg" width="30" id="post-like-icon" height="30" fill="currentColor"
+                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor"
                      class="bi bi-heart-fill" viewBox="0 0 16 16">
                     <path fill-rule="evenodd"
                           d="M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z"/>
                 </svg>
             </div>
             <div class="post-comments">
-                <h2>Комментарии</h2>
+                <h2>Описание</h2>
+                <p>descriodasdsad</p>
             </div>
-            <div class="add-to-favorites" id="add-to-favorites">
-                <svg xmlns="http://www.w3.org/2000/svg" id="post-favorite-icon"
+            <div class="add-to-favorites">
+                <svg xmlns="http://www.w3.org/2000/svg"
                      class="bi bi-bookmark-fill" viewBox="0 0 16 16">
                     <path d="M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z"/>
                 </svg>
             </div>
         </div>
     </div>
+    <form id="post-form" enctype="multipart/form-data">
+        <label for="image-input">Image</label>
+        <input type="file" id="image-input" name="imageLink">
+        <br>
+        <label for="description-input">Description</label>
+        <textarea id="description-input" name="description"></textarea>
+        <br>
+        <input type="hidden" id="user-id-input" name="user_id" value="1"> <!--айди брать из базы данных-->
+        <input type="submit" value="create">
+    </form>
 </div>
 <script src="post.js"></script>
 </body>

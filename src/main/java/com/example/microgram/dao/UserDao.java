@@ -4,6 +4,7 @@ import com.example.microgram.entity.User;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -81,9 +82,12 @@ public class UserDao extends BaseDao {
                 "INSERT INTO users (id, accountName, email, password, postsCount, subscriptionsCount," +
                 "followersCount, name, surname) \n" +
                 "VALUES \n" +
-                "(100, 'qwer', 'john@gmail.com', '123', '0', '0', '0', 'oroz', 'altyn'),\n" +
-                "(200, 'qwer', 'emeli@gmail.com', '123', '0', '0', '0', 'aman', 'zoevich'),\n" +
-                "(300, 'qwer', 'one@gmail.com', '123', '0', '0', '0', 'rus', 'rusovich');\n");
+                "(100, 'qwer', 'john@gmail.com'," + "'" + new BCryptPasswordEncoder().encode("123") + "'" +
+                ", '0', '0', '0', 'oroz', 'altyn'),\n" +
+                "(200, 'qwer', 'emeli@gmail.com', " + "'" + new BCryptPasswordEncoder().encode("123") + "'" +
+                ", '0', '0', '0', 'aman', 'zoevich'),\n" +
+                "(300, 'qwer', 'one@gmail.com', " + "'" + new BCryptPasswordEncoder().encode("123") + "'" +
+                ", '0', '0', '0', 'rus', 'rusovich');\n");
     }
 
     public void saveToBase(User user) {
@@ -93,7 +97,7 @@ public class UserDao extends BaseDao {
     }
 
     public List<User> getByEmail(String email) {
-        String sql = "SELECT * FROM client WHERE email LIKE '" + email + "'";
+        String sql = "SELECT * FROM users WHERE email LIKE '" + email + "'";
         return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(User.class));
     }
 }

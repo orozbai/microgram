@@ -14,7 +14,7 @@
     object-fit: cover;
 }
 
-#heart {
+.heart {
     width: 100px;
     height: 100px;
     background-image: url("https://almode.ru/uploads/posts/2022-01/1642899001_1-almode-ru-p-serdechki-kartinki-1.png");
@@ -23,12 +23,11 @@
     transition: opacity 0.5s;
 }
 
-#heart-container {
+.heart-container {
+    border: green solid 2px;
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    top: 32%;
+    left: 45%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -66,35 +65,4 @@
     height: 30px;
     fill: currentColor;
     color: grey;
-}
-
-#splash-screen {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    background-color: #f0f0f0;
-}
-
-#login-button {
-    margin-top: 20px;
-    padding: 10px 20px;
-    font-size: 18px;
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    cursor: pointer;
-}
-
-#main-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-}
-
-.hidden {
-    display: none;
 }

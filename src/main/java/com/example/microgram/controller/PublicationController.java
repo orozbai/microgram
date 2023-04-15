@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -44,7 +45,8 @@ public class PublicationController {
     }
 
     @PostMapping("/publications/add")
-    public PublicationDto addPublication(@RequestBody PublicationDto publicationDto) {
+    public PublicationDto addPublication(@RequestBody PublicationDto publicationDto, @RequestParam("imageLink") MultipartFile file) {
+        System.out.println(file);
         return publicationService.addPublication(publicationDto);
     }
 

@@ -1,12 +1,12 @@
 package com.example.microgram.entity;
 
-import com.example.microgram.util.UserDetails;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
@@ -24,8 +24,6 @@ public class User implements UserDetails {
     private Integer followersCount;
     private String name;
     private String surname;
-    private Integer publicationId;
-    private Integer subscriptionId;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

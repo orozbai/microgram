@@ -2,6 +2,7 @@ package com.example.microgram.dto;
 
 import com.example.microgram.entity.Publication;
 import lombok.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 
@@ -10,7 +11,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
 public class PublicationDto {
-    private String imageLink;
+    private MultipartFile imageLink;
     private String description;
     private LocalDateTime publicationTime;
     private Integer likes;

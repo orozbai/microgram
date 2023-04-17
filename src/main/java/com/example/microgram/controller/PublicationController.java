@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -57,7 +58,7 @@ public class PublicationController {
         model.addAttribute("publications", publications);
         return "publications";
     }
-
+    //запустить сервер и нажать создать положив картинку
     @PostMapping("/publications/add")
     public String addPost(@RequestParam(name = "imageLink") MultipartFile file, Model model,
                           @RequestParam(name = "description", required = false) String description,
@@ -91,6 +92,11 @@ public class PublicationController {
                                    @RequestParam(name = "commentText", required = false) String text) {
         commentService.addComment(userId, postId, text);
         return "index";
+    }
+
+    @GetMapping("/get-id")
+    public Long getId() {
+        return 1 + publicationService.getPostLastId();
     }
 
     @DeleteMapping("/publications/{commentId}")

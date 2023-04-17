@@ -28,18 +28,21 @@ document.querySelector(".post-image").addEventListener("dblclick", function (eve
     }, 1000);
 });
 
-document.querySelector('.bi-bookmark-fill').addEventListener('click', function () {
-    let postIconFavorite = document.querySelector('.bi-bookmark-fill');
+addEventListener('click', favoriteIcon);
+
+function favoriteIcon(id) {
+    let postIconFavorite = document.getElementById(id);
     const currentColor = postIconFavorite.style.color;
     if (currentColor === 'grey') {
         postIconFavorite.style.color = 'orange';
     } else {
         postIconFavorite.style.color = 'grey';
     }
-});
+}
 
 function createPostElement(formData) {
     const reader = new FileReader();
+    const allId = getId();
     reader.onload = function (e) {
         let postIdInput = document.getElementById('post-id-input');
         postIdInput = postIdInput + 1;
@@ -90,6 +93,8 @@ function createPostElement(formData) {
 
         const divElement = document.createElement("div");
         divElement.className = "add-to-favorites";
+        divElement.id = 'add-to-favorites' + allId;
+        divElement.setAttribute("onclick", "favoriteIcon('add-to-favorites" + allId + "')");
         const addToFavoritesSvgElement = document.createElementNS("http://www.w3.org/2000/svg", "svg");
         addToFavoritesSvgElement.classList.add('bi', 'bi-bookmark-fill');
         addToFavoritesSvgElement.id = postIdInput.value;
@@ -107,6 +112,7 @@ function createPostElement(formData) {
         svgElementComment.setAttribute("height", "30");
         svgElementComment.setAttribute("fill", "currentColor");
         svgElementComment.classList.add('bi', 'bi-chat-dots');
+        svgElementComment.setAttribute('onclick', 'toggleCommentForm("comment-form' + allId + '","' + 'comment-list' + allId + '")');
         svgElementComment.setAttribute("viewBox", "0 0 16 16");
         const pathElement1 = document.createElementNS("http://www.w3.org/2000/svg", "path");
         pathElement1.setAttribute("d", "M5 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2z");
@@ -117,30 +123,76 @@ function createPostElement(formData) {
         divElementComment.appendChild(svgElementComment);
         postElement.appendChild(divElementComment)
 
+        const commentFormDiv = document.createElement("div");
+        commentFormDiv.setAttribute("id", "comment-form" + allId);
+        commentFormDiv.setAttribute("style", "display: none");
+        const commentForm = document.createElement("form");
+        commentForm.setAttribute("onsubmit", "submitComment(event" + ", 'comment-text" + allId + "', 'comment-list" + allId + "')");
+
+        const userIdInput = document.createElement("input");
+        userIdInput.setAttribute("type", "hidden");
+        userIdInput.setAttribute("id", "user-id" + allId);
+        userIdInput.setAttribute("value", "1");
+
+        const inputElement = document.createElement("input");
+        inputElement.setAttribute("type", "hidden");
+        inputElement.setAttribute("id", "post-id" + allId);
+        inputElement.setAttribute("value", "" + allId);
+
+        const commentTextLabel = document.createElement("label");
+        commentTextLabel.setAttribute("for", "comment-text" + allId);
+        commentTextLabel.textContent = "Comment Text:";
+
+        const commentTextArea = document.createElement("textarea");
+        commentTextArea.setAttribute("id", "comment-text" + allId);
+        commentTextArea.setAttribute("rows", "4");
+        commentTextArea.setAttribute("cols", "50");
+
+        const submitButton = document.createElement("input");
+        submitButton.setAttribute("type", "submit");
+        submitButton.setAttribute("value", "Send");
+
+        commentForm.appendChild(userIdInput);
+        commentForm.appendChild(inputElement);
+        commentForm.appendChild(commentTextLabel);
+        commentForm.appendChild(commentTextArea);
+        commentForm.appendChild(submitButton);
+
+        commentFormDiv.appendChild(commentForm);
+
+        const commentListDiv = document.createElement("div");
+        commentListDiv.setAttribute("id", "comment-list" + allId);
+        commentListDiv.setAttribute("style", "display: none");
+
+        divElementComment.appendChild(commentFormDiv);
+        divElementComment.appendChild(commentListDiv);
+
+
         insertPostElement(postElement);
     }
     reader.readAsDataURL(formData.get('imageLink'))
 }
 
-function createCommentElement(formData) {
+function createCommentElement(formData, list) {
     const p = document.createElement('p');
     p.textContent = formData.get('commentText');
 
-    insertCommentElement(p);
+    const containerElement = document.getElementById(list);
+    containerElement.appendChild(p);
 }
 
-async function submitComment(event) {
+async function submitComment(event, id, list) {
     event.preventDefault();
     const userId = document.getElementById('user-id').value;
     const postId = document.getElementById('post-id').value;
-    const commentText = document.getElementById('comment-text').value;
+    const commentText = document.getElementById(id).value;
 
     let formData = new FormData();
     formData.append('userId', userId);
     formData.append('postId', postId);
     formData.append('commentText', commentText);
 
-    createCommentElement(formData);
+    createCommentElement(formData, list);
 
     await fetch('http://localhost:8089/publications/comment', {
         method: 'POST',
@@ -148,14 +200,13 @@ async function submitComment(event) {
     });
 }
 
-function insertCommentElement(comment) {
-    const containerElement = document.getElementById('comment-list');
-    containerElement.appendChild(comment);
+async function getId() {
+    return await fetch('http://localhost:8089/get-id');
 }
 
-function toggleCommentForm() {
-    const commentForm = document.getElementById('comment-form');
-    const commentList = document.getElementById('comment-list');
+function toggleCommentForm(form, list) {
+    const commentForm = document.getElementById(form);
+    const commentList = document.getElementById(list);
     if (commentForm.style.display === 'none') {
         commentList.style.display = 'block';
         commentForm.style.display = 'block';

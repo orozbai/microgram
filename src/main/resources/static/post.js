@@ -41,9 +41,12 @@ document.querySelector('.bi-bookmark-fill').addEventListener('click', function (
 function createPostElement(formData) {
     const reader = new FileReader();
     reader.onload = function (e) {
+        let postIdInput = document.getElementById('post-id-input');
+        postIdInput = postIdInput + 1;
 
         const postElement = document.createElement('div');
         postElement.classList.add('post');
+        postElement.id = postIdInput.value
 
         const imgElement = document.createElement('img');
         imgElement.classList.add('post-image');
@@ -76,7 +79,7 @@ function createPostElement(formData) {
         postElement.appendChild(postLikesElement);
 
         const postCommentsElement = document.createElement('div');
-        postCommentsElement.classList.add('post-comments');
+        postCommentsElement.classList.add('post-description');
         const commentsHeadingElement = document.createElement('h2');
         commentsHeadingElement.textContent = 'Описание';
         const descriptionElement = document.createElement('p');
@@ -89,6 +92,7 @@ function createPostElement(formData) {
         divElement.className = "add-to-favorites";
         const addToFavoritesSvgElement = document.createElementNS("http://www.w3.org/2000/svg", "svg");
         addToFavoritesSvgElement.classList.add('bi', 'bi-bookmark-fill');
+        addToFavoritesSvgElement.id = postIdInput.value;
         addToFavoritesSvgElement.setAttribute("viewBox", "0 0 16 16");
         const favoritePathElement = document.createElementNS("http://www.w3.org/2000/svg", "path");
         favoritePathElement.setAttribute("d", "M2 2v13.5a.5.5 0 0 0 .74.439L8 13.069l5.26 2.87A.5.5 0 0 0 14 15.5V2a2 2 0 0 0-2-2H4a2 2 0 0 0-2 2z");
@@ -96,9 +100,69 @@ function createPostElement(formData) {
         divElement.appendChild(addToFavoritesSvgElement);
         postElement.appendChild(divElement);
 
+        const divElementComment = document.createElement("div");
+        divElementComment.className = "post-comment";
+        const svgElementComment = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        svgElementComment.setAttribute("width", "30");
+        svgElementComment.setAttribute("height", "30");
+        svgElementComment.setAttribute("fill", "currentColor");
+        svgElementComment.classList.add('bi', 'bi-chat-dots');
+        svgElementComment.setAttribute("viewBox", "0 0 16 16");
+        const pathElement1 = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        pathElement1.setAttribute("d", "M5 8a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm4 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm3 1a1 1 0 1 0 0-2 1 1 0 0 0 0 2z");
+        const pathElement2 = document.createElementNS("http://www.w3.org/2000/svg", "path");
+        pathElement2.setAttribute("d", "m2.165 15.803.02-.004c1.83-.363 2.948-.842 3.468-1.105A9.06 9.06 0 0 0 8 15c4.418 0 8-3.134 8-7s-3.582-7-8-7-8 3.134-8 7c0 1.76.743 3.37 1.97 4.6a10.437 10.437 0 0 1-.524 2.318l-.003.011a10.722 10.722 0 0 1-.244.637c-.079.186.074.394.273.362a21.673 21.673 0 0 0 .693-.125zm.8-3.108a1 1 0 0 0-.287-.801C1.618 10.83 1 9.468 1 8c0-3.192 3.004-6 7-6s7 2.808 7 6c0 3.193-3.004 6-7 6a8.06 8.06 0 0 1-2.088-.272 1 1 0 0 0-.711.074c-.387.196-1.24.57-2.634.893a10.97 10.97 0 0 0 .398-2z");
+        svgElementComment.appendChild(pathElement1);
+        svgElementComment.appendChild(pathElement2);
+        divElementComment.appendChild(svgElementComment);
+        postElement.appendChild(divElementComment)
+
         insertPostElement(postElement);
     }
     reader.readAsDataURL(formData.get('imageLink'))
+}
+
+function createCommentElement(formData) {
+    const p = document.createElement('p');
+    p.textContent = formData.get('commentText');
+
+    insertCommentElement(p);
+}
+
+async function submitComment(event) {
+    event.preventDefault();
+    const userId = document.getElementById('user-id').value;
+    const postId = document.getElementById('post-id').value;
+    const commentText = document.getElementById('comment-text').value;
+
+    let formData = new FormData();
+    formData.append('userId', userId);
+    formData.append('postId', postId);
+    formData.append('commentText', commentText);
+
+    createCommentElement(formData);
+
+    await fetch('http://localhost:8089/publications/comment', {
+        method: 'POST',
+        body: formData
+    });
+}
+
+function insertCommentElement(comment) {
+    const containerElement = document.getElementById('comment-list');
+    containerElement.appendChild(comment);
+}
+
+function toggleCommentForm() {
+    const commentForm = document.getElementById('comment-form');
+    const commentList = document.getElementById('comment-list');
+    if (commentForm.style.display === 'none') {
+        commentList.style.display = 'block';
+        commentForm.style.display = 'block';
+    } else {
+        commentList.style.display = 'none';
+        commentForm.style.display = 'none';
+    }
 }
 
 function insertPostElement(postElement) {
@@ -107,6 +171,7 @@ function insertPostElement(postElement) {
 }
 
 document.getElementById('post-form').onsubmit = async (e) => {
+    e.preventDefault();
     let imageInput = document.getElementById('image-input');
     let descriptionInput = document.getElementById('description-input');
     let userIdInput = document.getElementById('user-id-input');
@@ -116,12 +181,10 @@ document.getElementById('post-form').onsubmit = async (e) => {
     formData.append('description', descriptionInput.value);
     formData.append('user_id', userIdInput.value);
 
-    e.preventDefault();
-    let response = await fetch('/publications/add', {
+    await fetch('http://localhost:8089/publications/add', {
         method: 'POST',
         body: formData
     });
     createPostElement(formData)
-    let result = await response.json();
-    alert(result.message);
+    alert('post created successfully');
 }

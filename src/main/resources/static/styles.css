@@ -66,3 +66,12 @@
     fill: currentColor;
     color: grey;
 }
+
+.bi-chat-dots {
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
+
+.post-comment {
+    border: green 2px solid;
+}

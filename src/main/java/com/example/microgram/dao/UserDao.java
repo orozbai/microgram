@@ -79,14 +79,14 @@ public class UserDao extends BaseDao {
                 "followersCount INTEGER NOT NULL DEFAULT '0'," +
                 "name VARCHAR(40) NOT NULL DEFAULT 'name'," +
                 "surname VARCHAR(40) NOT NULL DEFAULT 'surname' );" +
-                "INSERT INTO users (id, accountName, email, password, postsCount, subscriptionsCount," +
+                "INSERT INTO users (accountName, email, password, postsCount, subscriptionsCount," +
                 "followersCount, name, surname) \n" +
                 "VALUES \n" +
-                "(100, 'qwer', 'john@gmail.com'," + "'" + new BCryptPasswordEncoder().encode("123") + "'" +
+                "('qwer', 'john@gmail.com'," + "'" + new BCryptPasswordEncoder().encode("123") + "'" +
                 ", '0', '0', '0', 'oroz', 'altyn'),\n" +
-                "(200, 'qwer', 'emeli@gmail.com', " + "'" + new BCryptPasswordEncoder().encode("123") + "'" +
+                "('qwer', 'emeli@gmail.com', " + "'" + new BCryptPasswordEncoder().encode("123") + "'" +
                 ", '0', '0', '0', 'aman', 'zoevich'),\n" +
-                "(300, 'qwer', 'one@gmail.com', " + "'" + new BCryptPasswordEncoder().encode("123") + "'" +
+                "('qwer', 'one@gmail.com', " + "'" + new BCryptPasswordEncoder().encode("123") + "'" +
                 ", '0', '0', '0', 'rus', 'rusovich');\n");
     }
 

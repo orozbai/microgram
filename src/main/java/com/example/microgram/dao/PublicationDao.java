@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import java.sql.PreparedStatement;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Component
@@ -37,23 +38,23 @@ public class PublicationDao extends BaseDao {
                 "likes INTEGER NOT NULL DEFAULT '0'," +
                 "user_id INTEGER," +
                 "FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE);" +
-                "INSERT INTO publications (id, imageLink, description, publicationTime, likes, user_id) \n" +
+                "INSERT INTO publications (imageLink, description, publicationTime, likes, user_id) \n" +
                 "VALUES \n" +
-                "(100, 'image link', 'some text', '2022-03-20 10:30:00', '0', '100'),\n" +
-                "(200, 'image link', 'some text', '2022-04-20 10:40:00', '0', '200'),\n" +
-                "(300, 'image link', 'some text', '2022-05-20 10:50:00', '0', '300');\n");
+                "('image link', 'some text', '2022-03-20 10:30:00', '0', '1'),\n" +
+                "('image link', 'some text', '2022-04-20 10:40:00', '0', '2'),\n" +
+                "('image link', 'some text', '2022-05-20 10:50:00', '0', '3');\n");
     }
 
-    public void save(Publication publication) {
+    public void save(String fileName, String description, Integer userId) {
         String sql = "insert into publications(imageLink, description, publicationTime, likes, user_id) " +
                 "values(?,?,?,?,?)";
         jdbcTemplate.update(con -> {
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setString(1, String.valueOf(publication.getImageLink()));
-            ps.setString(2, publication.getDescription());
-            ps.setTimestamp(3, Timestamp.valueOf(publication.getPublicationTime()));
-            ps.setInt(4, publication.getLikes());
-            ps.setInt(5, publication.getUser_id());
+            ps.setString(1, fileName);
+            ps.setString(2, description);
+            ps.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
+            ps.setInt(4, 0);
+            ps.setInt(5, userId);
             return ps;
         });
     }
@@ -73,5 +74,10 @@ public class PublicationDao extends BaseDao {
         String sql = "delete from comments " +
                 "where id = ?";
         jdbcTemplate.update(sql);
+    }
+
+    public Long getPostLastId() {
+        String sql = "SELECT id FROM publications ORDER BY id DESC LIMIT 1";
+        return jdbcTemplate.queryForObject(sql, Long.class);
     }
 }

@@ -18,10 +18,10 @@ public class SubscriptionDao extends BaseDao {
                 "whoIsSubscribedTo INTEGER NOT NULL DEFAULT '0'," +
                 "FOREIGN KEY (whoIsSubscribedTo) REFERENCES users(id) ON DELETE CASCADE," +
                 "FOREIGN KEY (whoIsSigning) REFERENCES users(id) ON DELETE CASCADE );" +
-                "INSERT INTO subscriptions (id, whoIsSigning, whoIsSubscribedTo) \n" +
+                "INSERT INTO subscriptions (whoIsSigning, whoIsSubscribedTo) \n" +
                 "VALUES \n" +
-                "(100, '100', '300'),\n" +
-                "(200, '200', '200'),\n" +
-                "(300, '300', '100');\n");
+                "('1', '3'),\n" +
+                "('2', '2'),\n" +
+                "('3', '1');\n");
     }
 }

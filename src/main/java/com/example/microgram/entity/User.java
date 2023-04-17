@@ -24,6 +24,7 @@ public class User implements UserDetails {
     private Integer followersCount;
     private String name;
     private String surname;
+    private Integer id;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

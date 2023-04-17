@@ -1,18 +1,24 @@
 package com.example.microgram.controller;
 
 import com.example.microgram.dto.CommentDto;
-import com.example.microgram.dto.PublicationDto;
 import com.example.microgram.entity.Publication;
 import com.example.microgram.security.SecurityConfig;
 import com.example.microgram.service.CommentService;
 import com.example.microgram.service.PublicationService;
+import com.example.microgram.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 @RestController
@@ -22,6 +28,8 @@ public class PublicationController {
     private PublicationService publicationService;
     @Autowired
     private CommentService commentService;
+    @Autowired
+    private UserService userService;
 
     @GetMapping("/publications/")
     public String showPublications(Model model) {
@@ -30,12 +38,18 @@ public class PublicationController {
         return "publications";
     }
 
-    @GetMapping("/watch")
-    public String showAllPosts(Model model) {
-        List<Publication> publications = publicationService.selectAllPublications();
-        model.addAttribute("publications", publications);
-        return "publications";
-    }
+//    @GetMapping("/watch")
+//    public String showAllPosts(Model model, Authentication authentication) {
+//        List<Publication> publications = publicationService.selectAllPublications();
+//        model.addAttribute("publications", publications);
+//        var user2 = (UserDetails) authentication.getPrincipal();
+//        var user = userService.getUserFromEmail(user2.getUsername());
+//        Long postId = 1 + publicationService.getPostLastId();
+//        int currentUserId = user.get(0).getId();
+//        model.addAttribute("postId", postId);
+//        model.addAttribute("userId", currentUserId);
+//        return "index";
+//    }
 
     @GetMapping("/publications/{id}")
     public String showPublicationById(@PathVariable Long id, Model model) {
@@ -45,9 +59,23 @@ public class PublicationController {
     }
 
     @PostMapping("/publications/add")
-    public PublicationDto addPublication(@RequestBody PublicationDto publicationDto, @RequestParam("imageLink") MultipartFile file) {
-        System.out.println(file);
-        return publicationService.addPublication(publicationDto);
+    public String addPost(@RequestParam(name = "imageLink") MultipartFile file, Model model,
+                          @RequestParam(name = "description", required = false) String description,
+                          @RequestParam(name = "user_id", required = false) Integer userId,
+                          Authentication authentication) {
+        byte[] data;
+        String fileName = file.getOriginalFilename();
+        Path path = Paths.get("src/main/resources/static/images/" + fileName);
+        var user = (UserDetails) authentication.getPrincipal();
+        var id = userService.getUserFromEmail(user.getUsername()).get(0).getId();
+        try {
+            data = file.getBytes();
+            Files.write(path, data);
+            publicationService.addPublication(fileName, description, id);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "index";
     }
 
     @DeleteMapping("/publications/{id}")
@@ -57,9 +85,12 @@ public class PublicationController {
         return ResponseEntity.notFound().build();
     }
 
-    @PostMapping("/publications/{id}/comment")
-    public CommentDto addCommentToPost(@PathVariable Long id, @RequestBody CommentDto commentDto) {
-        return commentService.addComment(id, commentDto);
+    @PostMapping("/publications/comment")
+    public String addCommentToPost(@RequestParam(name = "userId", required = false) Long userId,
+                                   @RequestParam(name = "postId", required = false) Long postId,
+                                   @RequestParam(name = "commentText", required = false) String text) {
+        commentService.addComment(userId, postId, text);
+        return "index";
     }
 
     @DeleteMapping("/publications/{commentId}")

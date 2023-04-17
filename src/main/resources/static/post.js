@@ -1,14 +1,16 @@
 'use strict'
 
-document.querySelector('.bi-heart-fill').addEventListener('click', function () {
-    const postIconLike = document.querySelector('.bi-heart-fill');
+function addHeart(id) {
+    const postIconLike = document.getElementById(id);
     const currentColor = postIconLike.style.color
     if (currentColor === 'red' || currentColor === 'rgb(255, 0,0)') {
         postIconLike.style.color = 'grey';
     } else {
         postIconLike.style.color = 'red';
     }
-})
+}
+
+addEventListener('click', addHeart);
 
 document.querySelector(".post-image").addEventListener("dblclick", function (event) {
     const postIconLike = document.querySelector('.bi-heart-fill');
@@ -67,6 +69,8 @@ function createPostElement(formData) {
 
         const postLikesElement = document.createElement('div');
         postLikesElement.classList.add('post-likes');
+        postLikesElement.id = 'post-likes' + allId;
+        postLikesElement.setAttribute('onclick', 'addHeart("post-likes' + allId + '")')
         const svgElement = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
         svgElement.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
         svgElement.setAttribute('width', '30');

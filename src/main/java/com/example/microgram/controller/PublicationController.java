@@ -1,5 +1,6 @@
 package com.example.microgram.controller;
 
+import com.example.microgram.dto.CommentDto;
 import com.example.microgram.entity.Publication;
 import com.example.microgram.security.SecurityConfig;
 import com.example.microgram.service.CommentService;
@@ -7,6 +8,7 @@ import com.example.microgram.service.PublicationService;
 import com.example.microgram.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -41,6 +43,12 @@ public class PublicationController {
     public ResponseEntity<List<Publication>> showAllPosts() {
         List<Publication> publications = publicationService.selectAllPublications();
         return ResponseEntity.ok(publications);
+    }
+
+    @GetMapping("/comments")
+    public ResponseEntity<List<CommentDto>> commentsAll(){
+        List<CommentDto> comments = commentService.showCommentsFromPublication();
+        return new ResponseEntity<>(comments, HttpStatus.OK);
     }
 
     @GetMapping("/publications/{id}")

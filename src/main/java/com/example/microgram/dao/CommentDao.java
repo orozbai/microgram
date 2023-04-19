@@ -1,5 +1,6 @@
 package com.example.microgram.dao;
 
+import com.example.microgram.dto.CommentDto;
 import com.example.microgram.entity.Comment;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -17,9 +18,9 @@ public class CommentDao extends BaseDao {
         super(jdbcTemplate, namedParameterJdbcTemplate);
     }
 
-    public List<Comment> getCommentsFromPublication() {
+    public List<CommentDto> getCommentsFromPublication() {
         String sql = "select * from comments";
-        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Comment.class));
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(CommentDto.class));
     }
 
     @Override

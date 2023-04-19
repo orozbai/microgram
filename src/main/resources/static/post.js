@@ -210,6 +210,9 @@ async function createBasePosts() {
     const response = await fetch('http://localhost:8089/watch');
     const postsList = await response.json();
 
+    const responseComm = await fetch('http://localhost:8089/comments');
+    const commentList = await responseComm.json();
+
     for (const post of postsList) {
         const imageUrl = '/images/' + post.imageLink;
         const imageBlob = await fetch(imageUrl).then(response => response.blob());
@@ -220,6 +223,16 @@ async function createBasePosts() {
         formData.append('commentText', post.description);
         formData.append('imageLink', imageFile);
         createPostElement(formData);
+
+        // for (const comment of commentList) {
+        //     const formData = new FormData();
+        //     formData.append('userId', comment.user_id);
+        //     formData.append('postId', comment.publication_id);
+        //     formData.append('commentText', comment.commentText);
+        //
+        //     createCommentElement(formData, "comment-list" + comment.publication_id)
+        // }
+
     }
 }
 

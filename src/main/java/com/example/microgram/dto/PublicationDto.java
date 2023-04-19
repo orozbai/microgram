@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PRIVATE, force = true)
 public class PublicationDto {
+    private Integer id;
     private String imageLink;
     private String description;
     private LocalDateTime publicationTime;

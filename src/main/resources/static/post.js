@@ -207,7 +207,8 @@ async function submitComment(event, id, list) {
 document.addEventListener('DOMContentLoaded', createBasePosts);
 
 async function createBasePosts() {
-    const postsList = (await fetch('http://localhost:8089/watch')).json();
+    const postsList = await fetch('http://localhost:8089/watch');
+
     const id = getId();
     let num = id - 1;
 

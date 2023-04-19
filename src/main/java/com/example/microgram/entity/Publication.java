@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Publication {
+    private Integer id;
     private String imageLink;
     private String description;
     private LocalDateTime publicationTime;

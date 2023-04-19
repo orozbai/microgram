@@ -1,6 +1,5 @@
 package com.example.microgram.controller;
 
-import com.example.microgram.dto.CommentDto;
 import com.example.microgram.entity.Publication;
 import com.example.microgram.security.SecurityConfig;
 import com.example.microgram.service.CommentService;
@@ -19,7 +18,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -40,10 +38,10 @@ public class PublicationController {
     }
 
     @GetMapping("/watch")
-    public String showAllPosts(Model model) {
+    public void showAllPosts(Model model) {
         List<Publication> publications = publicationService.selectAllPublications();
         model.addAttribute("publications", publications);
-        return "index";
+//        return "index";
     }
 
     @GetMapping("/publications/{id}")
@@ -52,7 +50,6 @@ public class PublicationController {
         model.addAttribute("publications", publications);
         return "publications";
     }
-    //запустить сервер и нажать создать положив картинку
     @PostMapping("/publications/add")
     public String addPost(@RequestParam(name = "imageLink") MultipartFile file, Model model,
                           @RequestParam(name = "description", required = false) String description,

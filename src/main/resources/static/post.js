@@ -204,6 +204,34 @@ async function submitComment(event, id, list) {
     });
 }
 
+document.addEventListener('DOMContentLoaded', createBasePosts);
+
+async function createBasePosts() {
+    const postsList = await fetch('http://localhost:8089/watch');
+    const id = getId();
+    let num = id - 1;
+
+    for (let i = 0; i < num; i++) {
+        const post = postsList.find(post => post.id === i)
+        const userId = post.get('user_id');
+        const postId = post.get('id');
+        const commentText = post.get('description');
+
+        const image = new Image();
+        image.src = 'src/main/resources/static/images/' + post.get('imageLink');
+
+        let formData = new FormData();
+        formData.append('userId', userId);
+        formData.append('postId', postId);
+        formData.append('commentText', commentText);
+        formData.append('imageLink', image.files[0]);
+
+        alert('Cod rabotaet');
+
+        createPostElement(formData);
+    }
+}
+
 async function getId() {
     return await fetch('http://localhost:8089/get-id');
 }

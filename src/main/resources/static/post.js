@@ -223,16 +223,14 @@ async function createBasePosts() {
         formData.append('commentText', post.description);
         formData.append('imageLink', imageFile);
         createPostElement(formData);
+    }
+    for (const comment of commentList) {
+        const formData = new FormData();
+        formData.append('userId', comment.user_id);
+        formData.append('postId', comment.publication_id);
+        formData.append('commentText', comment.commentText);
 
-        // for (const comment of commentList) {
-        //     const formData = new FormData();
-        //     formData.append('userId', comment.user_id);
-        //     formData.append('postId', comment.publication_id);
-        //     formData.append('commentText', comment.commentText);
-        //
-        //     createCommentElement(formData, "comment-list" + comment.publication_id)
-        // }
-
+        createCommentElement(formData, "comment-list" + comment.publication_id)
     }
 }
 

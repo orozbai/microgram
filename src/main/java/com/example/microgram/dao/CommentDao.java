@@ -37,7 +37,7 @@ public class CommentDao extends BaseDao {
                 "VALUES \n" +
                 "('some text', '2022-03-20 10:30:00', '1', '1'),\n" +
                 "('some text', '2022-04-20 10:40:00', '2', '2'),\n" +
-                "('some text', '2022-05-20 10:50:00', '3', '3');\n");
+                "('some text', '2022-05-20 10:50:00', '2', '3');\n");
     }
 
     public void addComment(Long userId, Long postId, String text) {

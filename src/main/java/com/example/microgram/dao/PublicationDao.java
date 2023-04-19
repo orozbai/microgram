@@ -40,9 +40,9 @@ public class PublicationDao extends BaseDao {
                 "FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE);" +
                 "INSERT INTO publications (imageLink, description, publicationTime, likes, user_id) \n" +
                 "VALUES \n" +
-                "('image link', 'some text', '2022-03-20 10:30:00', '0', '1'),\n" +
-                "('image link', 'some text', '2022-04-20 10:40:00', '0', '2'),\n" +
-                "('image link', 'some text', '2022-05-20 10:50:00', '0', '3');\n");
+                "('index_bg.jpg', 'some text', '2022-03-20 10:30:00', '0', '1'),\n" +
+                "('index_bg.jpg', 'some text', '2022-04-20 10:40:00', '0', '2'),\n" +
+                "('index_bg.jpg', 'some text', '2022-05-20 10:50:00', '0', '3');\n");
     }
 
     public void save(String fileName, String description, Integer userId) {

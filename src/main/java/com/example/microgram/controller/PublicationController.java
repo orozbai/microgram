@@ -39,18 +39,12 @@ public class PublicationController {
         return "publications";
     }
 
-//    @GetMapping("/watch")
-//    public String showAllPosts(Model model, Authentication authentication) {
-//        List<Publication> publications = publicationService.selectAllPublications();
-//        model.addAttribute("publications", publications);
-//        var user2 = (UserDetails) authentication.getPrincipal();
-//        var user = userService.getUserFromEmail(user2.getUsername());
-//        Long postId = 1 + publicationService.getPostLastId();
-//        int currentUserId = user.get(0).getId();
-//        model.addAttribute("postId", postId);
-//        model.addAttribute("userId", currentUserId);
-//        return "index";
-//    }
+    @GetMapping("/watch")
+    public String showAllPosts(Model model) {
+        List<Publication> publications = publicationService.selectAllPublications();
+        model.addAttribute("publications", publications);
+        return "index";
+    }
 
     @GetMapping("/publications/{id}")
     public String showPublicationById(@PathVariable Long id, Model model) {

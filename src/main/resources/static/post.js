@@ -243,3 +243,10 @@ document.getElementById('post-form').onsubmit = async (e) => {
     createPostElement(formData)
     alert('post created successfully');
 }
+
+async function createBasePosts() {
+    const posts = await fetch('http://localhost:8089/watch');
+    posts.forEach(post => {
+        createPostElement(post);
+    });
+}

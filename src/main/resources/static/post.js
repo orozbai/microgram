@@ -44,7 +44,7 @@ function favoriteIcon(id) {
 
 function createPostElement(formData) {
     const reader = new FileReader();
-    const allId = getId();
+    const allId = formData.get('postId');
     reader.onload = function (e) {
         let postIdInput = document.getElementById('post-id-input');
         postIdInput = postIdInput + 1;
@@ -207,31 +207,23 @@ async function submitComment(event, id, list) {
 document.addEventListener('DOMContentLoaded', createBasePosts);
 
 async function createBasePosts() {
-    const postsList = await fetch('http://localhost:8089/watch');
+    const response = await fetch('http://localhost:8089/watch');
+    const postsList = await response.json();
 
-    const id = getId();
-    let num = id - 1;
-
-    for (let i = 0; i < num; i++) {
-        const post = postsList.find(post => post.id === i)
-        const userId = post.get('user_id').value;
-        const postId = post.get('id').value;
-        const commentText = post.get('description').value;
-
-        const image = new Image();
-        image.src = 'src/main/resources/static/images/' + post.get('imageLink').value;
-
-        let formData = new FormData();
-        formData.append('userId', userId);
-        formData.append('postId', postId);
-        formData.append('commentText', commentText);
-        formData.append('imageLink', image.files[0]);
-
-        alert('Cod rabotaet');
-
+    for (const post of postsList) {
+        const imageUrl = '/images/' + post.imageLink;
+        const imageBlob = await fetch(imageUrl).then(response => response.blob());
+        const imageFile = new File([imageBlob], post.imageLink);
+        const formData = new FormData();
+        formData.append('userId', post.user_id);
+        formData.append('postId', post.id);
+        formData.append('commentText', post.description);
+        formData.append('imageLink', imageFile);
         createPostElement(formData);
     }
 }
+
+
 
 async function getId() {
     return await fetch('http://localhost:8089/get-id');
@@ -259,12 +251,12 @@ document.getElementById('post-form').onsubmit = async (e) => {
     let imageInput = document.getElementById('image-input');
     let descriptionInput = document.getElementById('description-input');
     let userIdInput = document.getElementById('user-id-input');
-
+    const id = getId() + 1;
     let formData = new FormData();
     formData.append('imageLink', imageInput.files[0]);
     formData.append('description', descriptionInput.value);
     formData.append('user_id', userIdInput.value);
-
+    formData.append('postId', id);
     await fetch('http://localhost:8089/publications/add', {
         method: 'POST',
         body: formData

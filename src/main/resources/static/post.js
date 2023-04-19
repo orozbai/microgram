@@ -207,18 +207,18 @@ async function submitComment(event, id, list) {
 document.addEventListener('DOMContentLoaded', createBasePosts);
 
 async function createBasePosts() {
-    const postsList = await fetch('http://localhost:8089/watch');
+    const postsList = (await fetch('http://localhost:8089/watch')).json();
     const id = getId();
     let num = id - 1;
 
     for (let i = 0; i < num; i++) {
         const post = postsList.find(post => post.id === i)
-        const userId = post.get('user_id');
-        const postId = post.get('id');
-        const commentText = post.get('description');
+        const userId = post.get('user_id').value;
+        const postId = post.get('id').value;
+        const commentText = post.get('description').value;
 
         const image = new Image();
-        image.src = 'src/main/resources/static/images/' + post.get('imageLink');
+        image.src = 'src/main/resources/static/images/' + post.get('imageLink').value;
 
         let formData = new FormData();
         formData.append('userId', userId);
@@ -270,11 +270,4 @@ document.getElementById('post-form').onsubmit = async (e) => {
     });
     createPostElement(formData)
     alert('post created successfully');
-}
-
-async function createBasePosts() {
-    const posts = await fetch('http://localhost:8089/watch');
-    posts.forEach(post => {
-        createPostElement(post);
-    });
 }

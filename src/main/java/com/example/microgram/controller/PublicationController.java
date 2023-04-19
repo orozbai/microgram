@@ -38,10 +38,9 @@ public class PublicationController {
     }
 
     @GetMapping("/watch")
-    public void showAllPosts(Model model) {
+    public ResponseEntity<List<Publication>> showAllPosts() {
         List<Publication> publications = publicationService.selectAllPublications();
-        model.addAttribute("publications", publications);
-//        return "index";
+        return ResponseEntity.ok(publications);
     }
 
     @GetMapping("/publications/{id}")

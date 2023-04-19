@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Publication {
-    private MultipartFile imageLink;
+    private String imageLink;
     private String description;
     private LocalDateTime publicationTime;
     private Integer likes;

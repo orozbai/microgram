@@ -7,7 +7,6 @@ import com.example.microgram.service.CommentService;
 import com.example.microgram.service.PublicationService;
 import com.example.microgram.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -25,12 +24,9 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 public class PublicationController {
-    @Autowired
-    private PublicationService publicationService;
-    @Autowired
-    private CommentService commentService;
-    @Autowired
-    private UserService userService;
+    private final PublicationService publicationService;
+    private final CommentService commentService;
+    private final UserService userService;
 
     @GetMapping("/publications/")
     public String showPublications(Model model) {
@@ -58,7 +54,7 @@ public class PublicationController {
         return "publications";
     }
     @PostMapping("/publications/add")
-    public String addPost(@RequestParam(name = "imageLink") MultipartFile file, Model model,
+    public String addPost(@RequestParam(name = "imageLink") MultipartFile file,
                           @RequestParam(name = "description", required = false) String description,
                           @RequestParam(name = "user_id", required = false) Integer userId,
                           Authentication authentication) {

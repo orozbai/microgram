@@ -1,0 +1,50 @@
+body {
+    background-image: url("https://i.pinimg.com/originals/94/24/c4/9424c4c89a3a37536d05df7cf7d48e25.gif");
+    background-size: 90%;
+}
+
+form {
+    width: 400px;
+    margin: 0 auto;
+    font-size: 18px;
+    font-family: Arial, sans-serif;
+}
+
+label {
+    display: block;
+    margin-bottom: 10px;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    border: none;
+    font-size: 18px;
+    font-family: Arial, sans-serif;
+}
+
+input[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    font-family: Arial, sans-serif;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: #3e8e41;
+}
+
+.error {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+}

@@ -5,18 +5,17 @@ import com.example.microgram.dto.SignUpDto;
 import com.example.microgram.entity.User;
 import com.example.microgram.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+@Controller
 @RequiredArgsConstructor
 public class AuthenticationController {
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
     @PostMapping("/login")
     public ResponseEntity<Boolean> authenticateUser(@RequestBody LoginDto loginDto) {
@@ -28,16 +27,22 @@ public class AuthenticationController {
         }
     }
 
-    @PostMapping("/sign-up")
+    @GetMapping("/register")
+    public String register() {
+        return "register";
+    }
+
+    @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody SignUpDto signUpDto) {
-        if (userService.checkUserFromAccountName(signUpDto.getUsername()).contains(signUpDto.getUsername())) {
+        if (userService.checkUserFromAccountName(signUpDto.getAccountName()).contains(signUpDto.getAccountName())) {
             return new ResponseEntity<>("Username is already taken!", HttpStatus.BAD_REQUEST);
         }
         if (userService.checkUserFromEmail(signUpDto.getEmail()).contains(signUpDto.getEmail())) {
             return new ResponseEntity<>("Email is already taken!", HttpStatus.BAD_REQUEST);
         }
         User user = new User();
-        user.setAccountName(signUpDto.getUsername());
+        user.setName(signUpDto.getName());
+        user.setAccountName(signUpDto.getAccountName());
         user.setEmail(signUpDto.getEmail());
         user.setPassword(signUpDto.getPassword());
         userService.saveToBase(user);

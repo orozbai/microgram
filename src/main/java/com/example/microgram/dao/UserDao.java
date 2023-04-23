@@ -91,9 +91,10 @@ public class UserDao extends BaseDao {
     }
 
     public void saveToBase(User user) {
-        jdbcTemplate.update("INSERT INTO users (accountName, email, password) \n" +
+        jdbcTemplate.update("INSERT INTO users (accountName, email, password, name) \n" +
                 "VALUES \n" +
-                "('" + user.getAccountName() + "', '" + user.getEmail() + "', '" + user.getPassword() + "')");
+                "('" + user.getAccountName() + "', '" + user.getEmail() + "', '" + new BCryptPasswordEncoder().encode(user.getPassword()) +
+                "', '" + user.getName() + "')");
     }
 
     public List<User> getByEmail(String email) {

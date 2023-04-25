@@ -12,23 +12,40 @@ function addHeart(id) {
 
 addEventListener('click', addHeart);
 
-document.querySelector(".post-image").addEventListener("dblclick", function (event) {
-    const postIconLike = document.querySelector('.bi-heart-fill');
+addEventListener('dblclick', doubleClickHeart);
+
+function doubleClickHeart(id, postLike) {
+    const postIconLike = document.getElementById(postLike);
     const currentColor = postIconLike.style.color
     if (currentColor === 'red' || currentColor === 'rgb(255, 0,0)') {
         postIconLike.style.color = 'grey';
     } else {
         postIconLike.style.color = 'red';
+        const heart = document.getElementById(id);
+        heart.style.opacity = "1";
+        setTimeout(function () {
+            heart.style.opacity = "0";
+        }, 1000);
     }
+}
 
-    const heart = document.querySelector('.heart');
-    heart.style.top = (event.clientY - heart.offsetHeight / 2) + "px";
-    heart.style.left = (event.clientX - heart.offsetWidth / 2) + "px";
-    heart.style.opacity = "1";
-    setTimeout(function () {
-        heart.style.opacity = "0";
-    }, 1000);
-});
+// document.querySelector(".post-image").addEventListener("dblclick", function (event) {
+//     const postIconLike = document.querySelector('.bi-heart-fill');
+//     const currentColor = postIconLike.style.color
+//     if (currentColor === 'red' || currentColor === 'rgb(255, 0,0)') {
+//         postIconLike.style.color = 'grey';
+//     } else {
+//         postIconLike.style.color = 'red';
+//     }
+//
+//     const heart = document.querySelector('.heart');
+//     heart.style.top = (event.clientY - heart.offsetHeight / 2) + "px";
+//     heart.style.left = (event.clientX - heart.offsetWidth / 2) + "px";
+//     heart.style.opacity = "1";
+//     setTimeout(function () {
+//         heart.style.opacity = "0";
+//     }, 1000);
+// });
 
 addEventListener('click', favoriteIcon);
 
@@ -45,6 +62,7 @@ function favoriteIcon(id) {
 function createPostElement(formData) {
     const reader = new FileReader();
     const allId = formData.get('postId');
+    const userId = formData.get('user_id');
     reader.onload = function (e) {
         let postIdInput = document.getElementById('post-id-input');
         postIdInput = postIdInput + 1;
@@ -57,14 +75,28 @@ function createPostElement(formData) {
         imgElement.classList.add('post-image');
         imgElement.src = e.target.result;
         imgElement.alt = 'post image';
-        postElement.appendChild(imgElement);
+        imgElement.setAttribute('ondblclick', 'doubleClickHeart("post-image-id' + allId + '", "' + 'post-likes' + allId + '")');
 
         const heartContainerElement = document.createElement('div');
         heartContainerElement.classList.add('heart-container');
+        heartContainerElement.appendChild(imgElement);
         postElement.appendChild(heartContainerElement);
 
         const heartElement = document.createElement('div');
         heartElement.classList.add('heart');
+        heartElement.id = 'post-image-id' + allId;
+        const svgElementHeart = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+        svgElementHeart.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+        svgElementHeart.setAttribute('width', '30');
+        svgElementHeart.setAttribute('height', '30');
+        svgElementHeart.setAttribute('fill', 'currentColor');
+        svgElementHeart.classList.add('bi', 'bi-heart-fill');
+        svgElementHeart.setAttribute('viewBox', '0 0 16 16');
+        const pathElementHeart = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        pathElementHeart.setAttribute('fill-rule', 'evenodd');
+        pathElementHeart.setAttribute('d', 'M8 1.314C12.438-3.248 23.534 4.735 8 15-7.534 4.736 3.562-3.248 8 1.314z');
+        svgElementHeart.appendChild(pathElementHeart);
+        heartElement.appendChild(svgElementHeart);
         heartContainerElement.appendChild(heartElement);
 
         const postLikesElement = document.createElement('div');
@@ -131,17 +163,18 @@ function createPostElement(formData) {
         commentFormDiv.setAttribute("id", "comment-form" + allId);
         commentFormDiv.setAttribute("style", "display: none");
         const commentForm = document.createElement("form");
-        commentForm.setAttribute("onsubmit", "submitComment(event" + ", 'comment-text" + allId + "', 'comment-list" + allId + "')");
+        commentForm.setAttribute("onsubmit", "submitComment(event" + ", 'comment-text" + allId + "'," +
+            "'comment-list" + allId + "'," + "'user-id" + allId + "'," + "'post-id" + allId + "')");
 
         const userIdInput = document.createElement("input");
         userIdInput.setAttribute("type", "hidden");
         userIdInput.setAttribute("id", "user-id" + allId);
-        userIdInput.setAttribute("value", "1");
+        userIdInput.setAttribute("value", '' + userId + '');
 
         const inputElement = document.createElement("input");
         inputElement.setAttribute("type", "hidden");
         inputElement.setAttribute("id", "post-id" + allId);
-        inputElement.setAttribute("value", "" + allId);
+        inputElement.setAttribute("value", '' + allId + '');
 
         const commentTextLabel = document.createElement("label");
         commentTextLabel.setAttribute("for", "comment-text" + allId);
@@ -185,14 +218,14 @@ function createCommentElement(formData, list) {
     containerElement.appendChild(p);
 }
 
-async function submitComment(event, id, list) {
+async function submitComment(event, id, list, user, post) {
     event.preventDefault();
-    const userId = document.getElementById('user-id').value;
-    const postId = document.getElementById('post-id').value;
+    const userId = document.getElementById(user).value;
+    const postId = document.getElementById(post).value;
     const commentText = document.getElementById(id).value;
 
     let formData = new FormData();
-    formData.append('userId', userId);
+    formData.append('user_id', userId);
     formData.append('postId', postId);
     formData.append('commentText', commentText);
 
@@ -218,7 +251,7 @@ async function createBasePosts() {
         const imageBlob = await fetch(imageUrl).then(response => response.blob());
         const imageFile = new File([imageBlob], post.imageLink);
         const formData = new FormData();
-        formData.append('userId', post.user_id);
+        formData.append('user_id', post.user_id);
         formData.append('postId', post.id);
         formData.append('commentText', post.description);
         formData.append('imageLink', imageFile);
@@ -226,18 +259,12 @@ async function createBasePosts() {
     }
     for (const comment of commentList) {
         const formData = new FormData();
-        formData.append('userId', comment.user_id);
+        formData.append('user_id', comment.user_id);
         formData.append('postId', comment.publication_id);
         formData.append('commentText', comment.commentText);
 
         createCommentElement(formData, "comment-list" + comment.publication_id)
     }
-}
-
-
-
-async function getId() {
-    return await fetch('http://localhost:8089/get-id');
 }
 
 function toggleCommentForm(form, list) {
@@ -261,13 +288,25 @@ document.getElementById('post-form').onsubmit = async (e) => {
     e.preventDefault();
     let imageInput = document.getElementById('image-input');
     let descriptionInput = document.getElementById('description-input');
-    let userIdInput = document.getElementById('user-id-input');
-    const id = getId() + 1;
+    const form = await fetch('http://localhost:8089/publications/get-id').then(response => response.json())
+        .then(data => {
+            console.log(data);
+            const user = data[0]
+            const post = data[1]
+            const formData = new FormData();
+            formData.append('user', user);
+            formData.append('post', post);
+            return formData;
+        });
+    const user = form.get('user');
+    const post = form.get('post');
+    console.log(user)
+    console.log(post)
     let formData = new FormData();
     formData.append('imageLink', imageInput.files[0]);
     formData.append('description', descriptionInput.value);
-    formData.append('user_id', userIdInput.value);
-    formData.append('postId', id);
+    formData.append('user_id', user);
+    formData.append('postId', post);
     await fetch('http://localhost:8089/publications/add', {
         method: 'POST',
         body: formData

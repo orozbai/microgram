@@ -19,6 +19,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -42,7 +45,7 @@ public class PublicationController {
     }
 
     @GetMapping("/comments")
-    public ResponseEntity<List<CommentDto>> commentsAll(){
+    public ResponseEntity<List<CommentDto>> commentsAll() {
         List<CommentDto> comments = commentService.showCommentsFromPublication();
         return new ResponseEntity<>(comments, HttpStatus.OK);
     }
@@ -53,6 +56,7 @@ public class PublicationController {
         model.addAttribute("publications", publications);
         return "publications";
     }
+
     @PostMapping("/publications/add")
     public String addPost(@RequestParam(name = "imageLink") MultipartFile file,
                           @RequestParam(name = "description", required = false) String description,
@@ -81,16 +85,30 @@ public class PublicationController {
     }
 
     @PostMapping("/publications/comment")
-    public String addCommentToPost(@RequestParam(name = "userId", required = false) Long userId,
-                                   @RequestParam(name = "postId", required = false) Long postId,
+    public String addCommentToPost(@RequestParam(name = "user_id", required = false) Object user,
+                                   @RequestParam(name = "postId", required = false) Object post,
                                    @RequestParam(name = "commentText", required = false) String text) {
-        commentService.addComment(userId, postId, text);
+        try {
+            NumberFormat format = NumberFormat.getInstance();
+            Number userId = format.parse((String) user);
+            Number postId = format.parse((String) post);
+            commentService.addComment(userId.longValue(), postId.longValue(), text);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         return "index";
     }
 
-    @GetMapping("/get-id")
-    public Long getId() {
-        return 1 + publicationService.getPostLastId();
+    @GetMapping("/publications/get-id")
+    public ResponseEntity<List<Long>> getId(Authentication authentication) {
+        List<Long> list = new ArrayList<>();
+        var userC = (UserDetails) authentication.getPrincipal();
+        var user = userService.getUserFromEmail(userC.getUsername()).get(0).getId();
+        Long id = (long) user;
+        Long lastId = publicationService.getPostLastId() + 1;
+        list.add(id);
+        list.add(lastId);
+        return ResponseEntity.ok(list);
     }
 
     @DeleteMapping("/publications/{commentId}")

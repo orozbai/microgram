@@ -279,8 +279,6 @@ document.getElementById('post-form').onsubmit = async (e) => {
                 body: newFormData
             }).then(resp => resp.json())
                 .then(dat => {
-                    console.log(data);
-                    console.log(dat);
                     const user = dat[0]
                     const post = data[0]
                     const formData = new FormData();
@@ -291,8 +289,6 @@ document.getElementById('post-form').onsubmit = async (e) => {
         });
     const idUser = form.get('user');
     const idPost = form.get('post');
-    console.log(idUser)
-    console.log(idPost)
     let formData = new FormData();
     formData.append('imageLink', imageInput.files[0]);
     formData.append('description', descriptionInput.value);

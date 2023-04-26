@@ -24,15 +24,15 @@ public class AuthenticationController {
     private final AuthenticationManager authenticationManager;
 
     @PostMapping("/aut/login")
-    public ResponseEntity<String> authenticateUser(@RequestBody LoginDto loginDto) {
+    public ResponseEntity<Boolean> authenticateUser(@RequestBody LoginDto loginDto) {
         Authentication authentication = new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword());
         try {
             authenticationManager.authenticate(authentication);
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            return ResponseEntity.ok("Авторизация успешна");
+            return ResponseEntity.ok(true);
         } catch (AuthenticationException e) {
             e.printStackTrace();
-            return new ResponseEntity<>("Авторизация не удалась", HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(false, HttpStatus.UNAUTHORIZED);
         }
     }
 

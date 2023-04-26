@@ -5,6 +5,13 @@ if (registerForm != null) {
     registerForm.addEventListener('submit', async (event) => {
         event.preventDefault();
         let formData = new FormData(event.target);
+        let loginFormData = new FormData();
+        loginFormData.append('password', document.getElementById('register-password').value);
+        const email = document.getElementById('register-email').value;
+        loginFormData.append('email', email);
+        localStorage.setItem('email', email);
+        alert('registered successfully');
+        window.location.href = 'http://localhost:8089/'
         await fetch('http://localhost:8089/register', {
             method: 'POST',
             headers: {
@@ -12,8 +19,24 @@ if (registerForm != null) {
             },
             body: JSON.stringify(Object.fromEntries(formData))
         });
-        alert('registered successfully');
+        await fetch('http://localhost:8089/aut/login', {
+            method: 'POST',
+            headers: {
+                'Content-type': 'application/json'
+            },
+            body: JSON.stringify(Object.fromEntries(loginFormData))
+        })
     })
+}
+
+addEventListener('DOMContentLoaded', addUserEmailNavbar);
+
+function addUserEmailNavbar() {
+    const userEmailNavbar = document.getElementById('navbar-user-email');
+    let userEmail = localStorage.getItem('email');
+    if (userEmail) {
+        userEmailNavbar.innerHTML = userEmail;
+    }
 }
 
 function deleteLocalStorageEmail() {
@@ -44,12 +67,22 @@ if (loginForm != null) {
         formData.append('email', email);
         formData.append('password', password);
         localStorage.setItem('email', email);
+        const userEmailNavbar = document.getElementById('navbar-user-email');
+        let userEmail = localStorage.getItem('email');
+        if (userEmail) {
+            userEmailNavbar.innerHTML = userEmail;
+        }
         await fetch('http://localhost:8089/aut/login', {
             method: 'POST',
             headers: {
                 'Content-type': 'application/json'
             },
             body: JSON.stringify(Object.fromEntries(formData))
-        })
+        }).then(response => response.json())
+            .then(data => {
+                if (data !== true) {
+                    localStorage.removeItem('email');
+                }
+            })
     })
 }

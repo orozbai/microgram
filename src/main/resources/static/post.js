@@ -29,24 +29,6 @@ function doubleClickHeart(id, postLike) {
     }
 }
 
-// document.querySelector(".post-image").addEventListener("dblclick", function (event) {
-//     const postIconLike = document.querySelector('.bi-heart-fill');
-//     const currentColor = postIconLike.style.color
-//     if (currentColor === 'red' || currentColor === 'rgb(255, 0,0)') {
-//         postIconLike.style.color = 'grey';
-//     } else {
-//         postIconLike.style.color = 'red';
-//     }
-//
-//     const heart = document.querySelector('.heart');
-//     heart.style.top = (event.clientY - heart.offsetHeight / 2) + "px";
-//     heart.style.left = (event.clientX - heart.offsetWidth / 2) + "px";
-//     heart.style.opacity = "1";
-//     setTimeout(function () {
-//         heart.style.opacity = "0";
-//     }, 1000);
-// });
-
 addEventListener('click', favoriteIcon);
 
 function favoriteIcon(id) {
@@ -290,23 +272,32 @@ document.getElementById('post-form').onsubmit = async (e) => {
     let descriptionInput = document.getElementById('description-input');
     const form = await fetch('http://localhost:8089/publications/get-id').then(response => response.json())
         .then(data => {
-            console.log(data);
-            const user = data[0]
-            const post = data[1]
-            const formData = new FormData();
-            formData.append('user', user);
-            formData.append('post', post);
-            return formData;
+            const newFormData = new FormData();
+            newFormData.append('email', localStorage.getItem('email'))
+            return fetch('http://localhost:8089/get-id/user', {
+                method: 'POST',
+                body: newFormData
+            }).then(resp => resp.json())
+                .then(dat => {
+                    console.log(data);
+                    console.log(dat);
+                    const user = dat[0]
+                    const post = data[0]
+                    const formData = new FormData();
+                    formData.append('user', user);
+                    formData.append('post', post);
+                    return formData;
+                })
         });
-    const user = form.get('user');
-    const post = form.get('post');
-    console.log(user)
-    console.log(post)
+    const idUser = form.get('user');
+    const idPost = form.get('post');
+    console.log(idUser)
+    console.log(idPost)
     let formData = new FormData();
     formData.append('imageLink', imageInput.files[0]);
     formData.append('description', descriptionInput.value);
-    formData.append('user_id', user);
-    formData.append('postId', post);
+    formData.append('user_id', idUser);
+    formData.append('postId', idPost);
     await fetch('http://localhost:8089/publications/add', {
         method: 'POST',
         body: formData

@@ -7,6 +7,11 @@ import com.example.microgram.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,14 +21,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 @RequiredArgsConstructor
 public class AuthenticationController {
     private final UserService userService;
+    private final AuthenticationManager authenticationManager;
 
-    @PostMapping("/login")
-    public ResponseEntity<Boolean> authenticateUser(@RequestBody LoginDto loginDto) {
-        if (userService.login(loginDto.getUsernameOrEmail(), loginDto.getPassword())) {
-            return new ResponseEntity<>(userService.login(loginDto.getUsernameOrEmail(),
-                    loginDto.getPassword()), HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(false, HttpStatus.BAD_REQUEST);
+    @PostMapping("/aut/login")
+    public ResponseEntity<String> authenticateUser(@RequestBody LoginDto loginDto) {
+        Authentication authentication = new UsernamePasswordAuthenticationToken(loginDto.getEmail(), loginDto.getPassword());
+        try {
+            authenticationManager.authenticate(authentication);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+            return ResponseEntity.ok("Авторизация успешна");
+        } catch (AuthenticationException e) {
+            e.printStackTrace();
+            return new ResponseEntity<>("Авторизация не удалась", HttpStatus.UNAUTHORIZED);
         }
     }
 

@@ -9,8 +9,6 @@ import com.example.microgram.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -60,17 +58,14 @@ public class PublicationController {
     @PostMapping("/publications/add")
     public String addPost(@RequestParam(name = "imageLink") MultipartFile file,
                           @RequestParam(name = "description", required = false) String description,
-                          @RequestParam(name = "user_id", required = false) Integer userId,
-                          Authentication authentication) {
+                          @RequestParam(name = "user_id", required = false) Integer userId) {
         byte[] data;
         String fileName = file.getOriginalFilename();
         Path path = Paths.get("src/main/resources/static/images/" + fileName);
-        var user = (UserDetails) authentication.getPrincipal();
-        var id = userService.getUserFromEmail(user.getUsername()).get(0).getId();
         try {
             data = file.getBytes();
             Files.write(path, data);
-            publicationService.addPublication(fileName, description, id);
+            publicationService.addPublication(fileName, description, userId);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -100,14 +95,18 @@ public class PublicationController {
     }
 
     @GetMapping("/publications/get-id")
-    public ResponseEntity<List<Long>> getId(Authentication authentication) {
+    public ResponseEntity<List<Long>> getId() {
         List<Long> list = new ArrayList<>();
-        var userC = (UserDetails) authentication.getPrincipal();
-        var user = userService.getUserFromEmail(userC.getUsername()).get(0).getId();
-        Long id = (long) user;
         Long lastId = publicationService.getPostLastId() + 1;
-        list.add(id);
         list.add(lastId);
+        return ResponseEntity.ok(list);
+    }
+
+    @PostMapping("/get-id/user")
+    public ResponseEntity<List<Long>> getUserId(@RequestParam(name = "email", required = false) String userEmail) {
+        List<Long> list = new ArrayList<>();
+        var user = userService.getUserFromEmail(userEmail).get(0).getId();
+        list.add(Long.valueOf(user));
         return ResponseEntity.ok(list);
     }
 

@@ -71,7 +71,7 @@
     <br>
     <input type="submit" value="register">
 </form>
-<script src="../register.js"></script>
+<script src="../authentication.js"></script>
 <script>
 
     const emailInput = document.getElementById("register-email");
